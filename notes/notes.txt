@@ -1,0 +1,13 @@
+1) routing setup
+    -pass along necessary info to final event view?  or get it from firebase?  best way to get those details (all posts, pics, comments for that individual event)
+2) sign in/sign up form
+    -component for each, swap between on button click?  allow login with fb?
+3) link to firebase
+    -map out schema first
+        -main obj: events
+            -sub: event
+                -title, desc, image, created date, created by, edited date, edited by
+                -sub: posts
+                    -title, text, img?, created on, created by, edited on, edited by
+        -main obj: users
+            -email(username), password(hashed- by firebase?), added on, last login
