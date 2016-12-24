@@ -1,7 +1,7 @@
 1) routing setup
     -pass along necessary info to final event view?  or get it from firebase?  best way to get those details (all posts, pics, comments for that individual event)
 2) sign in/sign up form
-    -component for each, swap between on button click?  allow login with fb?
+    -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
     -map out schema first
         -main obj: events
@@ -10,4 +10,6 @@
                 -sub: posts
                     -title, text, img?, created on, created by, edited on, edited by
         -main obj: users
-            -email(username), password(hashed- by firebase?), added on, last login
+            -email(username), password(hashed- by firebase?), level (root, admin, user) added on, last login
+4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
+5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events

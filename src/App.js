@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
+import base from './base';
 
 import EventComponent from './Components/EventComponent';
+import AddEventForm from './Components/AddEventForm';
 
 //placeholder: to be moved to firebase
 const testEvents = {
@@ -48,13 +50,20 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.setState({ events: testEvents });
+    this.ref = base.syncState(`allEvents`, {
+            context: this,
+            state: 'events'
+        });
   }
-
 
   //manage events (general info)
   addNewEvent(event) {
-    console.log('adding event:', event);
+    const events = {...this.state.events};
+    const timestamp = Date.now();
+
+    events[`evt${timestamp}`] = event;
+
+    this.setState({ events });
   }
 
   editEvent(id) {
@@ -62,7 +71,12 @@ class App extends Component {
   }
 
   deleteEvent(id) {
-    console.log('del event:', id);
+    let confirm = window.confirm('Are you sure?'); //bootleg- make this better!
+    if(confirm) {
+      const events = {...this.state.events};
+      events[id] = null;
+      this.setState({ events });
+    }
   }
 
   //manage event posts (to be passed to EventDetails component)
@@ -81,7 +95,6 @@ class App extends Component {
   render() {
     const events = Object.keys(this.state.events)
       .map(key => {
-        console.log(key);
         return <EventComponent key={key} 
           pk={key} 
           title={this.state.events[key].title} 
@@ -99,7 +112,7 @@ class App extends Component {
         <div className="App-intro">
           {events}
         </div>
-        <button onClick={() => this.addNewEvent('hello')}>Add Event</button>
+        <AddEventForm addNewEvent={this.addNewEvent} />
       </div>
     );
   }
