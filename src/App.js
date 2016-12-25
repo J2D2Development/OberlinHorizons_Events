@@ -4,6 +4,7 @@ import base from './base';
 
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
+import ConfirmModal from './Components/ConfirmModal';
 
 //placeholder: to be moved to firebase
 const testEvents = {
@@ -56,6 +57,10 @@ class App extends Component {
         });
   }
 
+  confirmModal(msg) {
+    return false;
+  }
+
   //manage events (general info)
   addNewEvent(event) {
     const events = {...this.state.events};
@@ -71,7 +76,7 @@ class App extends Component {
   }
 
   deleteEvent(id) {
-    let confirm = window.confirm('Are you sure?'); //bootleg- make this better!
+    let confirm = window.confirm('Are you sure?');
     if(confirm) {
       const events = {...this.state.events};
       events[id] = null;
@@ -97,6 +102,7 @@ class App extends Component {
       .map(key => {
         return <EventComponent key={key} 
           pk={key} 
+          eventDate={this.state.events[key].eventDate || 'None'}
           title={this.state.events[key].title} 
           details={this.state.events[key].details} 
           link={this.state.events[key].link}
@@ -109,10 +115,22 @@ class App extends Component {
         <div className="App-header">
           <h2>Oberlin Horizons - Events</h2>
         </div>
-        <div className="App-intro">
-          {events}
+        <div className="events-main--wrapper">
+          <h2>Upcoming Events</h2>
+          <table>
+            <tbody>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Details</th>
+                <th colSpan="3">Action</th>
+            </tr>
+              {events}
+            </tbody>
+          </table>
+          <h2>Add New Event</h2>
+          <AddEventForm addNewEvent={this.addNewEvent} />
         </div>
-        <AddEventForm addNewEvent={this.addNewEvent} />
       </div>
     );
   }

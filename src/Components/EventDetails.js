@@ -7,8 +7,6 @@ export default class EventDetails extends Component {
     }
 
     render() {
-        console.log(this.props);
-        console.log('params:', this.params);
         return(
             <div>
                 <h1>{this.props.params.eventId} Details!</h1>

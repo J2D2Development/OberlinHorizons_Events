@@ -8,15 +8,26 @@ export default class EventComponent extends Component {
 
     render() {
         return(
-            <div>
-                <h2>{this.props.title}</h2>
-                <p>{this.props.details}</p>
-                <Link to={`/${this.props.link}`}>View</Link>
-                &nbsp;--&nbsp;
-                <a onClick={() => this.props.editEvent(this.props.pk)}>Edit this Event</a>
-                &nbsp;--&nbsp;
-                <a onClick={() => this.props.deleteEvent(this.props.pk)}>Delete this Event</a>
-            </div>
+            <tr>
+                <td>
+                    {this.props.eventDate}
+                </td>
+                <td>
+                    <strong>{this.props.title}</strong>
+                </td>
+                <td>
+                    {this.props.details}
+                </td>
+                <td>
+                    <Link to={`/${this.props.link}`}>View</Link>
+                </td>
+                <td>
+                    <a onClick={() => this.props.editEvent(this.props.pk)}>Edit this Event</a>
+                </td>
+                <td>
+                    <a onClick={() => this.props.deleteEvent(this.props.pk)}>Delete this Event</a>
+                </td>
+            </tr>
         )
     }
 }
