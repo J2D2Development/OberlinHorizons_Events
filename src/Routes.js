@@ -13,7 +13,9 @@ const Root = () => {
         <BrowserRouter>
             <div>
                 <Match exactly pattern="/" component={isLoggedIn ? App : Login} />
-                <Match exactly pattern="/:eventId" component={EventDetails} />
+                <Match exactly pattern="/:eventId" render={(props) => (
+                    <EventDetails eventTest={'world'} {...props} />
+                )} />
                 <Miss component={NotFound} />
             </div>
         </BrowserRouter>

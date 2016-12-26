@@ -10,16 +10,16 @@ export default class EventComponent extends Component {
         return(
             <tr>
                 <td>
-                    {this.props.eventDate}
+                    {this.props.eventInfo.eventDate || 'None'}
                 </td>
                 <td>
-                    <strong>{this.props.title}</strong>
+                    <strong>{this.props.eventInfo.title}</strong>
                 </td>
                 <td>
-                    {this.props.details}
+                    {this.props.eventInfo.details}
                 </td>
                 <td>
-                    <Link to={`/${this.props.link}`}>View</Link>
+                    <Link to={`/${this.props.eventInfo.link}`}>View</Link>
                 </td>
                 <td>
                     <a onClick={() => this.props.editEvent(this.props.pk)}>Edit this Event</a>

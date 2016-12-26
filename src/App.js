@@ -4,35 +4,7 @@ import base from './base';
 
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
-import ConfirmModal from './Components/ConfirmModal';
-
-//placeholder: to be moved to firebase
-const testEvents = {
-  evt1: {
-    id: 1, title: 'Beergeschmeght Dec 2016', details: 'Beers were drank drunk', link: 'beers-2016',
-    posts: {
-      post1: {id: 1},
-      post2: {id: 2},
-      post3: {id: 3}
-    }
-  },
-  evt2: {
-    id: 2, title: 'Dipcember 2016', details: 'I should have won for sure!', link: 'dipcember-2016',
-    posts: {
-      post1: {id: 1},
-      post2: {id: 2},
-      post3: {id: 3}
-    }
-  },
-  evt3: {
-    id: 3, title: 'Circlejerk 2069', details: 'Hopefully not', link: 'circlejerk-2069',
-    posts: {
-      post1: {id: 1},
-      post2: {id: 2},
-      post3: {id: 3}
-    }
-  }
-};
+// import ConfirmModal from './Components/ConfirmModal';
 
 class App extends Component {
   constructor() {
@@ -102,10 +74,7 @@ class App extends Component {
       .map(key => {
         return <EventComponent key={key} 
           pk={key} 
-          eventDate={this.state.events[key].eventDate || 'None'}
-          title={this.state.events[key].title} 
-          details={this.state.events[key].details} 
-          link={this.state.events[key].link}
+          eventInfo={this.state.events[key]}
           editEvent={this.editEvent}
           deleteEvent={this.deleteEvent} />
     });

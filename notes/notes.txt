@@ -1,5 +1,5 @@
 1) routing setup
-    -pass along necessary info to final event view?  or get it from firebase?  best way to get those details (all posts, pics, comments for that individual event)
+    -getting it from firebase for now- probably not the best way, but seems to work.  using 'link' as index as it's the only thing passed by react-router
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
