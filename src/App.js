@@ -76,30 +76,16 @@ class App extends Component {
           pk={key} 
           eventInfo={this.state.events[key]}
           editEvent={this.editEvent}
-          deleteEvent={this.deleteEvent} />
+          deleteEvent={this.deleteEvent}
+          addNewPost={this.addNewPost} />
     });
 
     return (
       <div className="App">
-        <div className="App-header">
-          <h2>Oberlin Horizons - Events</h2>
-        </div>
-        <div className="events-main--wrapper">
-          <h2>Upcoming Events</h2>
-          <table>
-            <tbody>
-            <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Details</th>
-                <th colSpan="3">Action</th>
-            </tr>
+            <div className="events-main--wrapper">
               {events}
-            </tbody>
-          </table>
-          <h2>Add New Event</h2>
-          <AddEventForm addNewEvent={this.addNewEvent} />
-        </div>
+              <AddEventForm addNewEvent={this.addNewEvent} />
+            </div>
       </div>
     );
   }

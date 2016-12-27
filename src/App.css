@@ -1,24 +1,100 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
-
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+nav {
+  margin-bottom: 36px;
+  box-shadow: 0 2px 6px 0 #333;
+}
+.main-nav {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #22313F;
+}
+.nav-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  padding: 6px;
+  color: #ccc;
+  cursor: pointer;
+  transform: scale(0.75);
+  transition: transform 0.2s ease;
+}
+.nav-button:hover {
+  transform: scale(1.15);
+}
+.logo-center {
+  font-size: 1.5em;
+  font-weight: normal;
+  padding: 6px;
+  background-color: #22313F !important;
+  color: #f5f5f5;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  padding: 20px;
-  color: white;
-}
-
 .events-main--wrapper {
-  
+  margin: 8px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
-.events-main--wrapper table {
-  margin: 16px 0 24px 0;
+.event-card {
+  position: relative;
+  margin-right: 1%;
+  height: 250px;
+  width: 24%;
+}
+.event-card-main {
+  height: 75%;
+  background-color: #E4F1FE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.date {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 3px 3px 0 0;
+  text-align: right;
+  background-color: rgba(255,255,255,0.7);
   width: 100%;
+}
+.event-image--default {
+  max-height: 100%;
+  min-height: 100%;
+  width: 100%;
+}
+.event-card-footer {
+  background-color: #446CB3;
+  color: #f5f5f5;
+  padding: 3px;
+}
+.event-card-footer--title {
+  font-size: 1.25em;
+  margin-bottom: 3px;
+}
+.event-card-footer--actions {
+  display: flex;
+  justify-content: flex-start;
+}
+.event-card-footer--actions i {
+  margin-right: 6px;
+  font-size: 14pt;
+  font-weight: 100;
 }
 
 @keyframes App-logo-spin {
@@ -34,22 +110,53 @@
   display: flex;
   flex-direction: row;
 }
-.form-row {
-  padding: 6px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+
+.form-vertical {
+  height: 100%;
+  min-height: 100%;
 }
-.form-flex-grow {
-  flex-grow: 1;
-  margin: 0 6px 0 6px;
+.new-event-image-placeholder {
+  color: #ccc;
+  text-align: center;
 }
-.form-row input {
+.new-event-image-submit {
+  color: inherit;
+  background-color: inherit;
   border: none;
   outline: none;
-  padding: 3px 3px 0 3px;
-  font-size: 1.2em;
-  border-bottom: 1px solid #333;
+}
+.date-input {
+  padding: 0;
+  margin: 0;
+  text-align: right;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: inherit;
+  color: inherit;
+}
+.title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #f5f5f5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #f5f5f5;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #f5f5f5;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #f5f5f5;
 }
 
 /*custom confirm modal*/

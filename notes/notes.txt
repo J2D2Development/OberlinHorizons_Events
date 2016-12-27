@@ -1,5 +1,6 @@
 1) routing setup
     -getting it from firebase for now- probably not the best way, but seems to work.  using 'link' as index as it's the only thing passed by react-router
+    -need to figure this out- can't pass functions down via firebase- has to be done via props.  need to pass props to another component via react-router
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
@@ -13,3 +14,7 @@
             -email(username), password(hashed- by firebase?), level (root, admin, user) added on, last login
 4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
 5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events
+6) re-org base level: Header is currently outside app, but will need access to routing for home/profile links
+7) fix card formatting (mobile and ipad breakpoints)
+8) fix 'add new event' formatting (button, image upload, drag/drop?, details field- how?)
+    -better answer might be modal for add new (add new card is just large plus box- click it to open modal and add event)

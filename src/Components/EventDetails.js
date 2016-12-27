@@ -20,6 +20,7 @@ export default class EventDetails extends Component {
     }
 
     render() {
+        console.log(this.props);
         let details;
         if(this.state) {
             details = this.state.allEvents[0];
