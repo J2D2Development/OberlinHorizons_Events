@@ -1,6 +1,7 @@
 1) routing setup
-    -getting it from firebase for now- probably not the best way, but seems to work.  using 'link' as index as it's the only thing passed by react-router
-    -need to figure this out- can't pass functions down via firebase- has to be done via props.  need to pass props to another component via react-router
+    -this is the fucking dumbest thing react does.  you can't pass props to a route, so it's completely fucking pointless to use the goddamn router.  best option: rewrite the entire fucking thing.  Everything is inside the router (bootstrap the Root component).  Then have a 'layout' component and include a header in that, have a sidebar component and include your event titles in that, have a 'main' component and include your event details in that.  in header, have links for profile and home and user setup (if admin status).
+        -http://stackoverflow.com/questions/36262360/react-router-global-header
+        -https://css-tricks.com/learning-react-router/
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase

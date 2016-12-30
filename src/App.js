@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 import base from './base';
 
+import Login from './Components/Login';
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
+import Header from './Components/Header';
+import Root from './Routes';
 // import ConfirmModal from './Components/ConfirmModal';
 
 class App extends Component {
   constructor() {
     super();
+    let isLoggedIn = true;
 
     this.addNewEvent = this.addNewEvent.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
@@ -81,11 +85,19 @@ class App extends Component {
     });
 
     return (
-      <div className="App">
-            <div className="events-main--wrapper">
-              {events}
-              <AddEventForm addNewEvent={this.addNewEvent} />
-            </div>
+      <div className="outer-wrapper">
+        <Header />
+        <div className="App">
+              <div className="events-main--wrapper">
+                <div className="events-main--sidebar">
+                  {events}
+                  <AddEventForm addNewEvent={this.addNewEvent} />
+                </div>
+                <div className="events-main--full">
+                  <Root />
+                </div>
+              </div>
+        </div>
       </div>
     );
   }

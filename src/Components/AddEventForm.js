@@ -27,20 +27,14 @@ export default class AddEventForm extends Component {
         return(
             <div className="event-card">
                 <form className="form-vertical" ref={input => this.eventForm = input} onSubmit={e => this.addEvent(e)}>
-                    <div className="event-card-main">
+                    <div className="event-card">
                         <div className="date">
                             <input className="date-input" ref={input => this.eventDate = input} type="date" placeholder="Date" />
                         </div>
-                        <button className="new-event-image-submit">
-                            <i className="fa fa-picture-o fa-5x new-event-image-placeholder" aria-hidden="true"></i><br />
-                            Upload Default Image
-                        </button>
-                    </div>
-                    <div className="event-card-footer">
-                        <div className="event-card-footer--title">
+                        <div className="event-card-title">
                             <input className="title-input" ref={input => this.title = input} type="text" placeholder="Event Title" />
                         </div>
-                        <div className="event-card-footer--actions">
+                        <div className="event-card-actions">
                             <button className="new-event-submit" type="submit">
                                 <i className="fa fa-plus" aria-hidden="true"></i>
                             </button>
