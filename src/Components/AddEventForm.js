@@ -33,6 +33,7 @@ export default class AddEventForm extends Component {
                         </div>
                         <div className="event-card-title">
                             <input className="title-input" ref={input => this.title = input} type="text" placeholder="Event Title" />
+                            <input className="title-input" ref={input => this.details = input} type="text" placeholder="Event Details" />
                         </div>
                         <div className="event-card-actions">
                             <button className="new-event-submit" type="submit">

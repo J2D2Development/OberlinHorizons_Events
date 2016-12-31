@@ -4,4 +4,4 @@ import { render } from 'react-dom';
 import Root from './Routes';
 import App from './App';
 
-render(<App />, document.getElementById('root'));
+render(<Root />, document.getElementById('root'));

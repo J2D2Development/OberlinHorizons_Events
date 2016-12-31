@@ -1,7 +1,5 @@
 1) routing setup
-    -this is the fucking dumbest thing react does.  you can't pass props to a route, so it's completely fucking pointless to use the goddamn router.  best option: rewrite the entire fucking thing.  Everything is inside the router (bootstrap the Root component).  Then have a 'layout' component and include a header in that, have a sidebar component and include your event titles in that, have a 'main' component and include your event details in that.  in header, have links for profile and home and user setup (if admin status).
-        -http://stackoverflow.com/questions/36262360/react-router-global-header
-        -https://css-tricks.com/learning-react-router/
+    -still can't get this bullshit to work.  trying to sync up firebase with eventdetails.js container component.  works on one component, but then state never fucking updates when navigating to different routes.  FUCKFUCKFUCKFUCKFUCKFUCK
     -another option: use first setup you tried, but have eventDetails.js be a container component- it can access state?
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
