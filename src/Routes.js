@@ -20,9 +20,9 @@ export default class Root extends Component {
         this.addNewEvent = this.addNewEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
         this.editEvent = this.editEvent.bind(this);
-        // this.addNewPost = this.addNewPost.bind(this);
-        // this.deletePost = this.deletePost.bind(this);
-        // this.editPost = this.editPost.bind(this);
+        this.addNewPost = this.addNewPost.bind(this);
+        this.deletePost = this.deletePost.bind(this);
+        this.editPost = this.editPost.bind(this);
 
         this.state = {
             events: {}
@@ -64,17 +64,17 @@ export default class Root extends Component {
     }
 
     // //manage event posts (to be passed to EventDetails component)
-    // addNewPost(post, eventId) {
-    //     console.log('adding post:', eventId, post);
-    // }
+    addNewPost(post, eventId) {
+        console.log('adding post:', eventId, post);
+    }
 
-    // editPost(eventId, postId) {
-    //     console.log('edit post:', eventId, postId);
-    // }
+    editPost(eventId, postId) {
+        console.log('edit post:', eventId, postId);
+    }
 
-    // deletePost(eventId, postId) {
-    //     console.log('del post:', eventId, postId);
-    // }
+    deletePost(eventId, postId) {
+        console.log('del post:', eventId, postId);
+    }
 
     render() {
         const events = Object.keys(this.state.events)
@@ -116,7 +116,11 @@ export default class Root extends Component {
                                             <AddEventForm addNewEvent={this.addNewEvent} />
                                         </div>
                                         <div className="events-main--full">
-                                            <EventDetails {...props} />
+                                            <EventDetails eventDetails={events.filter(e => {
+                                                return e.props.pk === props.params.eventId;
+                                            }).map(e => {
+                                                return e.props.eventInfo;
+                                            })[0]} addNewPost={this.addNewPost}  {...props} />
                                         </div>
                                     </div>
                                 </div>

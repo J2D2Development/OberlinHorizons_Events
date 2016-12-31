@@ -1,6 +1,5 @@
 1) routing setup
-    -still can't get this bullshit to work.  trying to sync up firebase with eventdetails.js container component.  works on one component, but then state never fucking updates when navigating to different routes.  FUCKFUCKFUCKFUCKFUCKFUCK
-    -another option: use first setup you tried, but have eventDetails.js be a container component- it can access state?
+    -Routes.js is too big, but it now handles passing state as props to all sub-components.  need to hook up 'add new post' function to firebase- when adding the post, will it automatically use the specific event object, or do i need to specify it in my state update?  method is on Routes.js for now.
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
