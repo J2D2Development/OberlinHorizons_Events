@@ -8,16 +8,16 @@ export default class AddPostForm extends Component {
     addPost(evt) {
         evt.preventDefault();
 
-        const timestamp = new Date();
+        const timestamp = Date.now();
 
         const newPost = {
             postedOn: timestamp,
             title: this.title.value,
             details: this.details.value,
-            author: 'Joe Test'
+            author: 'Joe Test',
+            approved: true
         };
-
-        this.props.addNewPost(newPost);
+        this.props.addNewPost(newPost, this.props.eventId);
         this.postForm.reset();
     }
 

@@ -1,5 +1,5 @@
 1) routing setup
-    -Routes.js is too big, but it now handles passing state as props to all sub-components.  need to hook up 'add new post' function to firebase- when adding the post, will it automatically use the specific event object, or do i need to specify it in my state update?  method is on Routes.js for now.
+    -Routes.js is too big, but it now handles passing state as props to all sub-components.
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
@@ -8,12 +8,14 @@
             -sub: event
                 -title, desc, image, created date, created by, edited date, edited by
                 -sub: posts
-                    -title, text, img?, created on, created by, edited on, edited by
+                    -title, text, img?, created on, created by, edited on, edited by, approved, comments
+                -sub of posts: comments
+                    -type (text, like, dislike), text (if like/dislike- this is the icon html string?), created on, create by, approved
         -main obj: users
             -email(username), password(hashed- by firebase?), level (root, admin, user) added on, last login
 4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
 5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events
 6) re-org base level: Header is currently outside app, but will need access to routing for home/profile links
-7) fix card formatting (mobile and ipad breakpoints)
+7) fix formatting
 8) fix 'add new event' formatting (button, image upload, drag/drop?, details field- how?)
     -better answer might be modal for add new (add new card is just large plus box- click it to open modal and add event)

@@ -95,6 +95,9 @@ nav {
 }
 .date {
   font-size: 0.85em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .event-card-actions {
   display: flex;

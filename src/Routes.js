@@ -36,6 +36,8 @@ export default class Root extends Component {
             });
     }
 
+    //method for 'get past events' - click button, get old events from db
+
     confirmModal(msg) {
         return false;
     }
@@ -65,7 +67,15 @@ export default class Root extends Component {
 
     // //manage event posts (to be passed to EventDetails component)
     addNewPost(post, eventId) {
-        console.log('adding post:', eventId, post);
+        const events = {...this.state.events};
+        const postId = `post${post.postedOn}`;
+        const eventPosts = events[eventId]['posts'];
+        if(!eventPosts) {
+           events[eventId]['posts']  = {};
+           
+        }
+        events[eventId]['posts'][postId] = post;
+        this.setState({ events });
     }
 
     editPost(eventId, postId) {
@@ -85,7 +95,8 @@ export default class Root extends Component {
                 editEvent={this.editEvent}
                 deleteEvent={this.deleteEvent}
                 addNewPost={this.addNewPost} />
-            });
+            })
+            .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
 
         return (
                 <BrowserRouter>
