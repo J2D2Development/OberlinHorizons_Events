@@ -67,19 +67,21 @@ nav {
   justify-content: space-around;
   height: 100%;
   min-height: 100%;
+  flex-grow: 1;
 }
 .events-main--sidebar {
   align-self: flex-start;
   background-color: #333;
   padding: 16px 3px 3px 3px;
   min-height: 100%;
+  min-width: 20%;
 }
 .events-main--full {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ccc;
-  align-self: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #fff;
+  padding: 0 16px 0 16px;
   flex-grow: 1;
   min-height: 100%;
 }
@@ -108,6 +110,67 @@ nav {
   font-size: 10pt;
   font-weight: 100;
 }
+
+/*event details view*/
+.event-details--headline {
+  border-bottom: 1px solid #333;
+  margin-bottom: 16px;
+  font-size: 1.25em;
+  min-width: 100%;
+}
+.event-details--headline h1 {
+  font-weight: normal;
+  margin: 0 0 3px 0;
+}
+.event-details--flex {
+  display: flex;
+  justify-content: space-between;
+}
+.event-details--more {
+  align-self: center;
+  font-size: 0.65em;
+  font-style: italic;
+}
+.event-details--body {
+  display: flex;
+  justify-content: space-between;
+}
+.event-details--posts {
+  max-width: 75%;
+  min-width: 75%;
+  margin-right: 12px;
+}
+.event-details--posts h2 {
+  font-weight: normal;
+  margin: 0 0 3px 0;
+}
+.event-details--post {
+  position: relative;
+  display: flex;
+  padding: 6px;
+  margin-bottom: 16px;
+  box-shadow: 2px 2px 6px #333;
+  min-width: 100%;
+  
+}
+.event-details--post img {
+  float: left;
+}
+.post-icon {
+  align-self: center;
+  margin: 6px 12px 6px 0;
+}
+
+/*add new post form*/
+.form-newpost--wrapper {
+  border: 1px solid red;
+}
+.form-newpost--wrapper h3 {
+  font-weight: normal;
+  color: #333;
+  margin: 0 0 3px 0;
+}
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
@@ -145,20 +208,17 @@ nav {
   font-size: inherit;
   color: inherit;
 }
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+
+/*::-webkit-input-placeholder {
     color:    #f5f5f5;
 }
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+::-moz-placeholder {
    color:    #f5f5f5;
    opacity:  1;
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ */
+:-ms-input-placeholder {
    color:    #f5f5f5;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #f5f5f5;
-}
+}*/
 
 /*custom confirm modal*/
 .modal-bg {
@@ -184,4 +244,43 @@ h2 {
   font-weight: normal;
   text-align: left;
   margin-bottom: 0;
+}
+
+/*react transitions*/
+.post-enter {
+  -webkit-transition: transform 0.5s, opacity 1.0s;
+  transition: transform 0.5s, opacity 1.0s;
+  opacity: 0;
+  -webkit-transform: translateY(-120%);
+          transform: translateY(-120%);
+}
+.post-enter.post-enter-active {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+/*.post-leave {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+.post-leave.post-leave-active {
+  -webkit-transform: translateY(120%);
+          transform: translateY(120%);
+}*/
+
+/*utility classes*/
+.top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 3px;
+}
+.icon-button {
+  color: #ccc;
+  cursor: pointer;
+}
+.icon-button:hover {
+  color: #333;
 }

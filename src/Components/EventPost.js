@@ -1,12 +1,14 @@
 import React from 'react';
 
 const EventPost = (props) => {
-    console.log(props);
-
     return(
-        <div>
-            <h1>{props.title}</h1>
-            <p>{props.details}</p>
+        <div className="event-details--post">
+            <i className="fa fa-window-close-o top-right icon-button" aria-hidden="true" onClick={() => { props.deletePost(props.eventId, props.postId)}} ></i>
+            <i className="fa fa-2x fa-user-o post-icon" aria-hidden="true"></i>
+            <div>
+                <h2>{props.title}</h2>
+                <div>{props.details}</div>
+            </div>
         </div>
     )
 }

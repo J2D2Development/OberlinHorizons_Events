@@ -84,6 +84,12 @@ export default class Root extends Component {
 
     deletePost(eventId, postId) {
         console.log('del post:', eventId, postId);
+        let confirm = window.confirm('Delete this event?');
+        if(confirm) {
+            const events = {...this.state.events};
+            events[eventId]['posts'][postId] = null;
+            this.setState({ events });
+        }
     }
 
     render() {
@@ -93,8 +99,7 @@ export default class Root extends Component {
                 pk={key} 
                 eventInfo={this.state.events[key]}
                 editEvent={this.editEvent}
-                deleteEvent={this.deleteEvent}
-                addNewPost={this.addNewPost} />
+                deleteEvent={this.deleteEvent} />
             })
             .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
 
@@ -131,7 +136,7 @@ export default class Root extends Component {
                                                 return e.props.pk === props.params.eventId;
                                             }).map(e => {
                                                 return e.props.eventInfo;
-                                            })[0]} addNewPost={this.addNewPost}  {...props} />
+                                            })[0]} addNewPost={this.addNewPost} deletePost={this.deletePost} {...props} />
                                         </div>
                                     </div>
                                 </div>

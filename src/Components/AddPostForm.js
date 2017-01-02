@@ -23,16 +23,16 @@ export default class AddPostForm extends Component {
 
     render() {
         return(
-            <div className="event-card">
+            <div className="form-newpost--wrapper">
                 <h3>Add new post</h3>
-                <form className="form-vertical" ref={input => this.postForm = input} onSubmit={e => this.addPost(e)}>
-                    <div className="event-card">
-                        <div className="event-card-title">
+                <form className="form-newpost" ref={input => this.postForm = input} onSubmit={e => this.addPost(e)}>
+                    <div className="form-newpost--main">
+                        <div className="form-newpost--inputs">
                             <input className="title-input" ref={input => this.title = input} type="text" placeholder="Title" />
                             <input className="title-input" ref={input => this.details = input} type="text" placeholder="Details" />
                         </div>
-                        <div className="event-card-actions">
-                            <button className="new-event-submit" type="submit">
+                        <div className="form-newpost--actions">
+                            <button className="new-post-submit" type="submit">
                                 <i className="fa fa-plus" aria-hidden="true"></i>
                             </button>
                         </div>
