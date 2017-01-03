@@ -2,6 +2,7 @@
     -for sidebar: instead of trying to pass events array to index route, create nested routes:
         <Sidebar events=events />
             The sidebar can receive props this way?  This wouldn't require nested routing, just component props, so try this first
+                -!!!might be working with setting state to the filtered events, but you're trying to pass an array to state (needs to be an object).  switch filter function to simply set state for the events object and see if render will fire when that changes.
         If that doesn't work, try nested routes for sidebar (current, past, new)
             -https://css-tricks.com/learning-react-router/
 2) sign in/sign up form

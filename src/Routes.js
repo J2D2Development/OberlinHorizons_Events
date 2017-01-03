@@ -8,6 +8,7 @@ import './App.css';
 import base from './base';
 
 import Login from './Components/Login';
+import MenuItems from './Components/MenuItems';
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
 import Header from './Components/Header';
@@ -17,6 +18,8 @@ export default class Root extends Component {
     constructor() {
         super();
         let isLoggedIn = true;
+
+        this.eventsFilter = 'current';
 
         this.getEvents = this.getEvents.bind(this);
         this.addNewEvent = this.addNewEvent.bind(this);
@@ -39,21 +42,15 @@ export default class Root extends Component {
             });
     }
 
-    getEvents(type) {
-        return Object.keys(this.state.events)
+    getEvents() {
+        const events = Object.keys(this.state.events)
         .map(key => {
             return <EventComponent key={key} 
             pk={key} 
             eventInfo={this.state.events[key]} />
         })
-        .filter(event => {
-            if(type === 'current') {
-                return Date.parse(event.props.eventInfo.eventDate) > Date.now();
-            } else {
-                return Date.parse(event.props.eventInfo.eventDate) < Date.now();
-            }
-        })
         .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
+        return events;
     }
 
     //manage events (general info)
@@ -121,6 +118,26 @@ export default class Root extends Component {
         bg.classList.remove('modal-bg--show');
     }
 
+    setEventsFilter(type) {
+        this.eventsFilter = type;
+        console.log('event filter set:', type);
+        let events = {...this.state.events};
+        events = Object.keys(events).map(key => {
+            return <EventComponent key={key} 
+            pk={key} 
+            eventInfo={this.state.events[key]} />
+        })
+        .filter(event => {
+            if(this.eventsFilter === 'current') {
+                return Date.parse(event.props.eventInfo.eventDate) > Date.now();
+            } else {
+                return Date.parse(event.props.eventInfo.eventDate) < Date.now();
+            }
+        });
+        console.log('after filter:', events);
+        this.setState({ events });
+    }
+
     render() {
         let events = this.getEvents('current');
         
@@ -135,12 +152,11 @@ export default class Root extends Component {
                                     <div className="events-main--wrapper">
                                         <div className="events-main--sidebar">
                                             <div className="events-sidebar--topmenu">
-                                                <span>Upcoming</span> -- 
-                                                <span>Past</span> -- 
+                                                <span onClick={() => this.setEventsFilter('current')}>Upcoming</span> -- 
+                                                <span onClick={() => this.setEventsFilter('past')}>Past</span> -- 
                                                 <span>Add New</span>
                                             </div>
-                                            <h3>Upcoming Events</h3>
-                                            { events }
+                                            <MenuItems events={events} />
                                             <h3>Add New Event</h3>
                                             <AddEventForm addNewEvent={this.addNewEvent} />
                                         </div>

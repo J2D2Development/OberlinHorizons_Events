@@ -316,6 +316,7 @@ h3 {
 }
 .link-nostyle {
   color: inherit;
+  display: block;
   text-decoration: none;
   border: 1px solid transparent;
   margin-bottom: 12px;
