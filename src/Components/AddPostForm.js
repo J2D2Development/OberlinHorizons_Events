@@ -12,7 +12,6 @@ export default class AddPostForm extends Component {
 
         const newPost = {
             postedOn: timestamp,
-            title: this.title.value,
             details: this.details.value,
             author: 'Joe Test',
             approved: true
@@ -23,13 +22,15 @@ export default class AddPostForm extends Component {
 
     render() {
         return(
-            <div className="form-newpost--wrapper">
-                <h3>Add new post</h3>
+            <div className="event-details--post">
+                <div className="post-wrapper">
+                    <i className="fa fa-2x fa-user-o post-icon" aria-hidden="true"></i><br />
+                    <span className="post-author">user</span>
+                </div>
                 <form className="form-newpost" ref={input => this.postForm = input} onSubmit={e => this.addPost(e)}>
                     <div className="form-newpost--main">
                         <div className="form-newpost--inputs">
-                            <input className="title-input" ref={input => this.title = input} type="text" placeholder="Title" />
-                            <input className="title-input" ref={input => this.details = input} type="text" placeholder="Details" />
+                            <input className="newpost-input--text" ref={input => this.details = input} type="text" placeholder="Add New Post" />
                         </div>
                         <div className="form-newpost--actions">
                             <button className="new-post-submit" type="submit">

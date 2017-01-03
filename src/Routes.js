@@ -11,6 +11,7 @@ import Login from './Components/Login';
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
 import Header from './Components/Header';
+import ConfirmModal from './Components/ConfirmModal';
 
 export default class Root extends Component {
     constructor() {
@@ -23,6 +24,7 @@ export default class Root extends Component {
         this.addNewPost = this.addNewPost.bind(this);
         this.deletePost = this.deletePost.bind(this);
         this.editPost = this.editPost.bind(this);
+        this.closeModal = this.closeModal.bind(this);
 
         this.state = {
             events: {}
@@ -57,6 +59,7 @@ export default class Root extends Component {
     }
 
     deleteEvent(id) {
+        //need to add redirect to home after delete
         let confirm = window.confirm('Are you sure?');
         if(confirm) {
             const events = {...this.state.events};
@@ -84,12 +87,26 @@ export default class Root extends Component {
 
     deletePost(eventId, postId) {
         console.log('del post:', eventId, postId);
-        let confirm = window.confirm('Delete this event?');
-        if(confirm) {
-            const events = {...this.state.events};
-            events[eventId]['posts'][postId] = null;
-            this.setState({ events });
-        }
+        this.showModal();
+        // let confirm = window.confirm('Delete this event?');
+        // if(confirm) {
+        //     const events = {...this.state.events};
+        //     events[eventId]['posts'][postId] = null;
+        //     this.setState({ events });
+        // }
+    }
+
+    //modal methods
+    //<ConfirmModal msg="Hi there" closeModal={this.closeModal} callback={this.modalCallback} />
+    showModal() {
+        console.log('show modal');
+        const bg = document.querySelector('.modal-bg');
+        bg.classList.add('modal-bg--show');
+    }
+    closeModal() {
+        console.log('close now');
+        const bg = document.querySelector('.modal-bg');
+        bg.classList.remove('modal-bg--show');
     }
 
     render() {
@@ -97,15 +114,14 @@ export default class Root extends Component {
             .map(key => {
                 return <EventComponent key={key} 
                 pk={key} 
-                eventInfo={this.state.events[key]}
-                editEvent={this.editEvent}
-                deleteEvent={this.deleteEvent} />
+                eventInfo={this.state.events[key]} />
             })
             .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
 
         return (
                 <BrowserRouter>
                     <div className="App">
+                        
                         <Match exactly pattern="/" render={(props) => (
                             <div className="outer-wrapper">
                                 <Header />
@@ -136,7 +152,7 @@ export default class Root extends Component {
                                                 return e.props.pk === props.params.eventId;
                                             }).map(e => {
                                                 return e.props.eventInfo;
-                                            })[0]} addNewPost={this.addNewPost} deletePost={this.deletePost} {...props} />
+                                            })[0]} addNewPost={this.addNewPost} deleteEvent={this.deleteEvent} editEvent={this.editEvent} deletePost={this.deletePost} {...props} />
                                         </div>
                                     </div>
                                 </div>

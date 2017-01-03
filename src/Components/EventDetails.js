@@ -6,6 +6,7 @@ import EventPost from './EventPost';
 
 const EventDetails = (props) => {
     let d, posts;
+    console.log(props);
     if(props.eventDetails) {
         d = props.eventDetails;
         if(d.posts) {
@@ -15,7 +16,7 @@ const EventDetails = (props) => {
             })
             .map(key => {
                 return(
-                    <EventPost key={key} postId={key} eventId={d.eventId} title={d.posts[key].title} details={d.posts[key].details} deletePost={props.deletePost} />
+                    <EventPost key={key} postId={key} eventId={d.eventId} author={d.posts[key].author} details={d.posts[key].details} deletePost={props.deletePost} />
                 )
             });
         }
@@ -28,7 +29,17 @@ const EventDetails = (props) => {
                     <h1>{d && d.title}</h1>
                     <div className="event-details--more">
                         Date: {d && d.eventDate}<br />
-                        Creator: ...
+                        Creator: ...<br />
+                        <div className="event-card-actions">
+                            <i
+                                onClick={() => props.editEvent(d.eventId)}
+                                className="fa fa-pencil-square-o" aria-hidden="true">
+                            </i>
+                            <i
+                                onClick={() => props.deleteEvent(d.eventId)}
+                                className="fa fa-times" aria-hidden="true">
+                            </i>
+                        </div>
                     </div>
                 </div>
                 {d && d.details}
@@ -41,9 +52,10 @@ const EventDetails = (props) => {
                         transitionLeave={false}>
                         { posts }
                     </ReactCSSTransitionGroup>
+                    <AddPostForm addNewPost={props.addNewPost} eventId={d && d.eventId} />
                 </div>
                 <div>
-                    <AddPostForm addNewPost={props.addNewPost} eventId={d && d.eventId} />
+                    Active User Info
                 </div>
             </div>
         </div>
