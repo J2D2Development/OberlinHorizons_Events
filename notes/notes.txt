@@ -1,5 +1,9 @@
 1) routing setup
-    -Routes.js is too big, but it now handles passing state as props to all sub-components.
+    -for sidebar: instead of trying to pass events array to index route, create nested routes:
+        <Sidebar events=events />
+            The sidebar can receive props this way?  This wouldn't require nested routing, just component props, so try this first
+        If that doesn't work, try nested routes for sidebar (current, past, new)
+            -https://css-tricks.com/learning-react-router/
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase

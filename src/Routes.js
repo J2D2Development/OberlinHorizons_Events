@@ -18,6 +18,7 @@ export default class Root extends Component {
         super();
         let isLoggedIn = true;
 
+        this.getEvents = this.getEvents.bind(this);
         this.addNewEvent = this.addNewEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
         this.editEvent = this.editEvent.bind(this);
@@ -38,10 +39,21 @@ export default class Root extends Component {
             });
     }
 
-    //method for 'get past events' - click button, get old events from db
-
-    confirmModal(msg) {
-        return false;
+    getEvents(type) {
+        return Object.keys(this.state.events)
+        .map(key => {
+            return <EventComponent key={key} 
+            pk={key} 
+            eventInfo={this.state.events[key]} />
+        })
+        .filter(event => {
+            if(type === 'current') {
+                return Date.parse(event.props.eventInfo.eventDate) > Date.now();
+            } else {
+                return Date.parse(event.props.eventInfo.eventDate) < Date.now();
+            }
+        })
+        .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
     }
 
     //manage events (general info)
@@ -110,14 +122,8 @@ export default class Root extends Component {
     }
 
     render() {
-        const events = Object.keys(this.state.events)
-            .map(key => {
-                return <EventComponent key={key} 
-                pk={key} 
-                eventInfo={this.state.events[key]} />
-            })
-            .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
-
+        let events = this.getEvents('current');
+        
         return (
                 <BrowserRouter>
                     <div className="App">
@@ -128,7 +134,14 @@ export default class Root extends Component {
                                 <div className="App">
                                     <div className="events-main--wrapper">
                                         <div className="events-main--sidebar">
+                                            <div className="events-sidebar--topmenu">
+                                                <span>Upcoming</span> -- 
+                                                <span>Past</span> -- 
+                                                <span>Add New</span>
+                                            </div>
+                                            <h3>Upcoming Events</h3>
                                             { events }
+                                            <h3>Add New Event</h3>
                                             <AddEventForm addNewEvent={this.addNewEvent} />
                                         </div>
                                         <div className="events-main--full">
