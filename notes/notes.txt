@@ -1,10 +1,10 @@
 1) routing setup
-    -for sidebar: instead of trying to pass events array to index route, create nested routes:
-        <Sidebar events=events />
-            The sidebar can receive props this way?  This wouldn't require nested routing, just component props, so try this first
-                -!!!might be working with setting state to the filtered events, but you're trying to pass an array to state (needs to be an object).  switch filter function to simply set state for the events object and see if render will fire when that changes.
-        If that doesn't work, try nested routes for sidebar (current, past, new)
-            -https://css-tricks.com/learning-react-router/
+    -for sidebar: filtering by current/past works, but many many bullshit problems
+        b) adding/deleting any event does not reload the state (despite call to setState)
+            -possible info:
+                http://stackoverflow.com/questions/28853199/reactjs-callback-function-is-not-called-in-case-of-this-setstate
+                https://github.com/facebook/react/issues/1740
+                https://github.com/facebook/react/issues/6320
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase

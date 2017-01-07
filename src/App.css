@@ -22,6 +22,7 @@ body {
   min-height: 100%;
 }
 nav {
+  font-size: 0.95em;
   position: fixed;
   top: 0;
   width: 100%;
@@ -44,15 +45,13 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2em;
   padding: 6px;
   color: #ccc;
   cursor: pointer;
-  transform: scale(0.75);
-  transition: transform 0.2s ease;
+  transition: color 0.2s ease;
 }
 .nav-button:hover {
-  transform: scale(1.15);
+  color: #fff;
 }
 .logo-center {
   font-size: 1.5em;
@@ -67,11 +66,8 @@ nav {
 }
 
 .events-main--wrapper {
-  display: flex;
-  justify-content: space-between;
   height: 100%;
   min-height: 100%;
-  padding-top: 50px;
 }
 .events-main--sidebar {
   display: flex;
@@ -79,14 +75,25 @@ nav {
   flex-direction: column;
   align-self: flex-start;
   padding: 16px 3px 3px 3px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 75px;
+  padding-right: 12px;
+  width: 230px;
   max-width: 20%;
   min-height: 100%;
+  max-height: 700px;
+  background-color: rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.2);
 }
 .events-main--full {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 16px 16px 0 16px;
+  padding-left: 250px;
+  padding-top: 50px;
   flex-grow: 2;
   min-height: 100%;
 }
@@ -181,6 +188,9 @@ nav {
   align-items: center;
   justify-content: space-between;
 }
+.form-newpost--inputs {
+  width: 100%;
+}
 .newpost-input--text {
   display: block;
   border: none;
@@ -190,6 +200,7 @@ nav {
   font-size: inherit;
   color: inherit;
   padding: 3px 3px 0 3px;
+  width: 100%;
 }
 
 

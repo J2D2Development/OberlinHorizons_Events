@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 export default class ConfirmModal extends Component {
-    constructor() {
-        super();
-    }
-
     render() {
         console.log(this.props);
         return(

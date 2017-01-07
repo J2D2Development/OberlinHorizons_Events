@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 export default class AddPostForm extends Component {
-    constructor() {
-        super();
-    }
-
     addPost(evt) {
         evt.preventDefault();
 

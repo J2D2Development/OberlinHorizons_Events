@@ -12,16 +12,13 @@ import MenuItems from './Components/MenuItems';
 import EventComponent from './Components/EventComponent';
 import AddEventForm from './Components/AddEventForm';
 import Header from './Components/Header';
-import ConfirmModal from './Components/ConfirmModal';
+//import ConfirmModal from './Components/ConfirmModal';
 
 export default class Root extends Component {
     constructor() {
         super();
-        let isLoggedIn = true;
 
-        this.eventsFilter = 'current';
-
-        this.getEvents = this.getEvents.bind(this);
+        this.filterType = 'current';
         this.addNewEvent = this.addNewEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
         this.editEvent = this.editEvent.bind(this);
@@ -29,38 +26,47 @@ export default class Root extends Component {
         this.deletePost = this.deletePost.bind(this);
         this.editPost = this.editPost.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.filterEvents = this.filterEvents.bind(this);
 
         this.state = {
-            events: {}
+            events: {},
+            displayEvents: [],
+            activeUsers: {},
+            loggedIn: localStorage.getItem('loggedIn') || false
         };
     }
 
     componentWillMount() {
-        this.ref = base.syncState(`allEvents`, {
-                context: this,
-                state: 'events'
-            });
+        console.log('component will mount!');
     }
 
-    getEvents() {
-        const events = Object.keys(this.state.events)
-        .map(key => {
-            return <EventComponent key={key} 
-            pk={key} 
-            eventInfo={this.state.events[key]} />
-        })
-        .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate);
-        return events;
+    componentDidMount() {
+        this.ref = base.syncState(`allEvents`, {
+                context: this,
+                state: 'events',
+                then: () => {
+                    this.filterEvents('current');
+                }
+            });
     }
 
     //manage events (general info)
     addNewEvent(event) {
+        console.log('add new event fired:', event);
         const events = {...this.state.events};
         const timestamp = Date.now();
         event.eventId = `evt${timestamp}`;
         events[`evt${timestamp}`] = event;
 
-        this.setState({ events });
+        this.setState({ 
+            events: events 
+        }, () => {
+            console.log('add new event callback started FUCKFUCKFUCKFUCK');
+        });
+
+        console.log('this is after this.setState call');
     }
 
     editEvent(id) {
@@ -69,11 +75,15 @@ export default class Root extends Component {
 
     deleteEvent(id) {
         //need to add redirect to home after delete
-        let confirm = window.confirm('Are you sure?');
+        //let confirm = window.confirm('Are you sure?');
+        let confirm = true;
         if(confirm) {
             const events = {...this.state.events};
             events[id] = null;
-            this.setState({ events });
+            this.setState({ events },
+                () => {
+                    console.log('delete event setstate callback');
+                });
         }
     }
 
@@ -96,13 +106,13 @@ export default class Root extends Component {
 
     deletePost(eventId, postId) {
         console.log('del post:', eventId, postId);
-        this.showModal();
-        // let confirm = window.confirm('Delete this event?');
-        // if(confirm) {
-        //     const events = {...this.state.events};
-        //     events[eventId]['posts'][postId] = null;
-        //     this.setState({ events });
-        // }
+        //this.showModal();
+        let confirm = window.confirm('Delete this event?');
+        if(confirm) {
+            const events = {...this.state.events};
+            events[eventId]['posts'][postId] = null;
+            this.setState({ events });
+        }
     }
 
     //modal methods
@@ -118,75 +128,111 @@ export default class Root extends Component {
         bg.classList.remove('modal-bg--show');
     }
 
-    setEventsFilter(type) {
-        this.eventsFilter = type;
-        console.log('event filter set:', type);
-        let events = {...this.state.events};
-        events = Object.keys(events).map(key => {
+    login(submitted) {
+        let session = this.state.loggedIn;
+        session = true;
+        localStorage.setItem('loggedIn', 'true');
+        this.setState({ loggedIn: session });
+    }
+
+    logout() {
+        let session = this.state.loggedIn;
+        session = false;
+        localStorage.removeItem('loggedIn');
+        this.setState({ loggedIn: session });
+    }
+
+    filterEvents(type) {
+        this.filterType = type;
+        let e = Object.keys(this.state.events)
+        .map(key => {
             return <EventComponent key={key} 
             pk={key} 
             eventInfo={this.state.events[key]} />
         })
         .filter(event => {
-            if(this.eventsFilter === 'current') {
-                return Date.parse(event.props.eventInfo.eventDate) > Date.now();
+            if(type === 'current') {
+                return new Date(event.props.eventInfo.eventDate) >= Date.now();
             } else {
-                return Date.parse(event.props.eventInfo.eventDate) < Date.now();
+                return new Date(event.props.eventInfo.eventDate) < Date.now();
             }
+        })
+        .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate ? 1 : -1);
+        
+        this.setState({
+            displayEvents: e
+        }, () => {
+            console.log('filter events setstate callback', this.state);
         });
-        console.log('after filter:', events);
-        this.setState({ events });
     }
 
-    render() {
-        let events = this.getEvents('current');
-        
+    render() {        
         return (
                 <BrowserRouter>
                     <div className="App">
                         
-                        <Match exactly pattern="/" render={(props) => (
-                            <div className="outer-wrapper">
-                                <Header />
-                                <div className="App">
-                                    <div className="events-main--wrapper">
-                                        <div className="events-main--sidebar">
-                                            <div className="events-sidebar--topmenu">
-                                                <span onClick={() => this.setEventsFilter('current')}>Upcoming</span> -- 
-                                                <span onClick={() => this.setEventsFilter('past')}>Past</span> -- 
-                                                <span>Add New</span>
+                        <Match exactly pattern="/" render={(props) => {
+                            if(!this.state.loggedIn) { 
+                                return (
+                                    <Login login={this.login} />
+                                ) 
+                            }
+
+                            return (
+                                <div className="outer-wrapper">
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <div className="App">
+                                        <div className="events-main--wrapper">
+                                            <div className="events-main--sidebar">
+                                                <div className="events-sidebar--topmenu">
+                                                    <span onClick={() => this.filterEvents('current')}>Upcoming</span>  --  
+                                                    <span onClick={() => this.filterEvents('past')}>Past</span>
+                                                </div>
+                                                <MenuItems title={this.filterType} events={this.state.displayEvents} />
+                                                <h3>Add New Event</h3>
+                                                <AddEventForm addNewEvent={this.addNewEvent} />
                                             </div>
-                                            <MenuItems events={events} />
-                                            <h3>Add New Event</h3>
-                                            <AddEventForm addNewEvent={this.addNewEvent} />
-                                        </div>
-                                        <div className="events-main--full">
-                                            <HomePlaceholder />
+                                            <div className="events-main--full">
+                                                <HomePlaceholder />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )} />
-                        <Match exactly pattern="/:eventId" render={(props) => (
-                            <div className="outer-wrapper">
-                                <Header />
-                                <div className="App">
-                                    <div className="events-main--wrapper">
-                                        <div className="events-main--sidebar">
-                                            { events }
-                                            <AddEventForm addNewEvent={this.addNewEvent} />
-                                        </div>
-                                        <div className="events-main--full">
-                                            <EventDetails eventDetails={events.filter(e => {
-                                                return e.props.pk === props.params.eventId;
-                                            }).map(e => {
-                                                return e.props.eventInfo;
-                                            })[0]} addNewPost={this.addNewPost} deleteEvent={this.deleteEvent} editEvent={this.editEvent} deletePost={this.deletePost} {...props} />
+                            )} 
+                        }/>
+                        <Match exactly pattern="/:eventId" render={(props) => {
+                            if(!this.state.loggedIn) { 
+                                return (
+                                    <Login login={this.login} />
+                                ) 
+                            }
+
+                            return (
+                                <div className="outer-wrapper">
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <div className="App">
+                                        <div className="events-main--wrapper">
+                                            <div className="events-main--sidebar">
+                                                <div className="events-sidebar--topmenu">
+                                                    <span onClick={() => this.filterEvents('current')}>Upcoming</span> -- 
+                                                    <span onClick={() => this.filterEvents('past')}>Past</span>
+                                                </div>
+                                                <MenuItems title="test" events={this.state.displayEvents} />
+                                                <h3>Add New Event</h3>
+                                                <AddEventForm addNewEvent={this.addNewEvent} />
+                                            </div>
+                                            <div className="events-main--full">
+                                                <EventDetails eventDetails={this.state.displayEvents.filter(e => {
+                                                    return e.props.pk === props.params.eventId;
+                                                }).map(e => {
+                                                    return e.props.eventInfo;
+                                                })[0]} addNewPost={this.addNewPost} deleteEvent={this.deleteEvent} editEvent={this.editEvent} deletePost={this.deletePost} {...props} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )} />
+                            )}
+                        }/>
                         <Miss component={NotFound} />
                     </div>
                 </BrowserRouter>

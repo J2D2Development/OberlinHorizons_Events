@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 export default class AddEventForm extends Component {
-    constructor() {
-        super();
-    }
-
     simpleSlugify(word) {
         return word.replace(/\s/g, '-');
     }

@@ -7,6 +7,7 @@ const Header = (props) => {
             <ul className="main-nav">
                 <li className="logo-center">Oberlin Horizons - Events</li>
                 <ul className="main-nav">
+                    <li style={{display: props.loggedIn ? 'flex' : 'none'}} onClick={props.logout} className="nav-button">Logout</li>
                     <li className="nav-button">
                         <Link to={'/'}>
                             <i className="fa fa-home" aria-hidden="true" title="Home"></i>
