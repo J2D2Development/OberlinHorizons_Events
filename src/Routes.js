@@ -15,8 +15,8 @@ import Header from './Components/Header';
 //import ConfirmModal from './Components/ConfirmModal';
 
 export default class Root extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.filterType = 'current';
         this.addNewEvent = this.addNewEvent.bind(this);
@@ -39,17 +39,25 @@ export default class Root extends Component {
     }
 
     componentWillMount() {
-        console.log('component will mount!');
-    }
-
-    componentDidMount() {
         this.ref = base.syncState(`allEvents`, {
                 context: this,
                 state: 'events',
                 then: () => {
+                    console.log('syncing events to firebase');
                     this.filterEvents('current');
                 }
             });
+    }
+
+    componentDidMount() {
+        
+        // this.ref = base.syncState(`allEvents`, {
+        //         context: this,
+        //         state: 'events',
+        //         then: () => {
+        //             this.filterEvents('current');
+        //         }
+        //     });
     }
 
     //manage events (general info)
@@ -64,6 +72,7 @@ export default class Root extends Component {
             events: events 
         }, () => {
             console.log('add new event callback started FUCKFUCKFUCKFUCK');
+
         });
 
         console.log('this is after this.setState call');
@@ -89,6 +98,7 @@ export default class Root extends Component {
 
     // //manage event posts (to be passed to EventDetails component)
     addNewPost(post, eventId) {
+        console.log('add new post fired:', post, eventId);
         const events = {...this.state.events};
         const postId = `post${post.postedOn}`;
         const eventPosts = events[eventId]['posts'];
@@ -97,7 +107,11 @@ export default class Root extends Component {
            
         }
         events[eventId]['posts'][postId] = post;
-        this.setState({ events });
+        this.setState({ 
+            events: events
+        }, () => {
+            console.log('added post', post, 'to event:', events[eventId]);
+        });
     }
 
     editPost(eventId, postId) {
@@ -107,11 +121,15 @@ export default class Root extends Component {
     deletePost(eventId, postId) {
         console.log('del post:', eventId, postId);
         //this.showModal();
-        let confirm = window.confirm('Delete this event?');
+        let confirm = true; //window.confirm('Delete this post?');
         if(confirm) {
+            console.log('performing delete');
             const events = {...this.state.events};
-            events[eventId]['posts'][postId] = null;
-            this.setState({ events });
+            delete events[eventId]['posts'][postId];
+            console.log(events);
+            this.setState({ 
+                events: events 
+            });
         }
     }
 
@@ -128,14 +146,31 @@ export default class Root extends Component {
         bg.classList.remove('modal-bg--show');
     }
 
+    // createUser() {
+    //     console.log('creating user:', submitted.username, submitted.password);
+    //     base.createUser({
+    //         email: submitted.username,
+    //         password: submitted.password
+    //     }, () => console.log('user created, this is the callback:', submitted));
+    // }
+
     login(submitted) {
         let session = this.state.loggedIn;
-        session = true;
-        localStorage.setItem('loggedIn', 'true');
-        this.setState({ loggedIn: session });
+        base.authWithPassword({email: submitted.username, password: submitted.password}, (error, data) => {
+            if(error) {
+                console.log('error:', error);
+                console.log('submitted:', submitted.username, submitted.password);
+            } else {
+                console.log('sign in success response:', data);
+                session = true;
+                localStorage.setItem('loggedIn', 'true');
+                this.setState({ loggedIn: session });
+            }
+        });
     }
 
     logout() {
+        base.unauth();
         let session = this.state.loggedIn;
         session = false;
         localStorage.removeItem('loggedIn');

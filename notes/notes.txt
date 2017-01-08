@@ -1,3 +1,6 @@
+0) adding post not syncing after first addition anymore
+    -add one post, works fine.  add another, doesn't update.  post is saved to firebase, but not displayed on screen until full refresh
+    -nothing is synced now.  whole application is completely fucked.
 1) routing setup
     -for sidebar: filtering by current/past works, but many many bullshit problems
         b) adding/deleting any event does not reload the state (despite call to setState)
