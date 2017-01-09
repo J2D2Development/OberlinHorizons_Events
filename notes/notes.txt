@@ -1,13 +1,5 @@
-0) adding post not syncing after first addition anymore
-    -add one post, works fine.  add another, doesn't update.  post is saved to firebase, but not displayed on screen until full refresh
-    -nothing is synced now.  whole application is completely fucked.
-1) routing setup
-    -for sidebar: filtering by current/past works, but many many bullshit problems
-        b) adding/deleting any event does not reload the state (despite call to setState)
-            -possible info:
-                http://stackoverflow.com/questions/28853199/reactjs-callback-function-is-not-called-in-case-of-this-setstate
-                https://github.com/facebook/react/issues/1740
-                https://github.com/facebook/react/issues/6320
+0) deleting event doesn't update ui
+    -event is deleted from state and from firebase, but ui doesn't update until hard refresh?
 2) sign in/sign up form
     -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
@@ -23,7 +15,6 @@
             -email(username), password(hashed- by firebase?), level (root, admin, user) added on, last login
 4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
 5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events
-6) re-org base level: Header is currently outside app, but will need access to routing for home/profile links
 7) fix formatting
 8) fix 'add new event' formatting (button, image upload, drag/drop?, details field- how?)
     -better answer might be modal for add new (add new card is just large plus box- click it to open modal and add event)

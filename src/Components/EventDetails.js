@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 //import { Link } from 'react-router';
 import AddPostForm from './AddPostForm';
 import EventPost from './EventPost';
+import moment from 'moment';
 
 const EventDetails = (props) => {
     let d, posts;
@@ -27,7 +28,7 @@ const EventDetails = (props) => {
                 <div className="event-details--flex">
                     <h1>{d && d.title}</h1>
                     <div className="event-details--more">
-                        Date: {d && d.eventDate}<br />
+                        Date: {d && moment(d.eventDate).format('MMMM Do YYYY')}<br />
                         Creator: ...<br />
                         <div className="event-card-actions">
                             <i

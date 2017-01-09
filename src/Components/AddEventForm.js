@@ -16,7 +16,7 @@ export default class AddEventForm extends Component {
             details: this.details.value,
             link: this.simpleSlugify(this.title.value)
         };
-
+        console.log(newEvent);
         this.props.addNewEvent(newEvent);
         this.eventForm.reset();
     }
@@ -30,8 +30,8 @@ export default class AddEventForm extends Component {
                             width={200} height={300}
                             selectedDate={new Date()} 
                             onSelect={momentObj => {
-                                console.log(momentObj.format('yyyy-mm-dd'));
-                                this.eventDate = momentObj.format('yyyy-mm-dd');
+                                console.log(momentObj.format());
+                                this.eventDate = momentObj.format();
                             }}
                         />
                     </div>

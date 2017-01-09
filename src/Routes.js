@@ -15,8 +15,8 @@ import Header from './Components/Header';
 //import ConfirmModal from './Components/ConfirmModal';
 
 export default class Root extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.filterType = 'current';
         this.addNewEvent = this.addNewEvent.bind(this);
@@ -39,43 +39,39 @@ export default class Root extends Component {
     }
 
     componentWillMount() {
-        this.ref = base.syncState(`allEvents`, {
-                context: this,
-                state: 'events',
-                then: () => {
-                    console.log('syncing events to firebase');
-                    this.filterEvents('current');
-                }
-            });
     }
 
     componentDidMount() {
-        
-        // this.ref = base.syncState(`allEvents`, {
-        //         context: this,
-        //         state: 'events',
-        //         then: () => {
-        //             this.filterEvents('current');
-        //         }
-        //     });
+        if(this.state.loggedIn) {
+            console.log('you are logged in!');
+            this.ref = base.syncState(`allEvents`, {
+                context: this,
+                state: 'events'
+            });
+
+            base.listenTo('allEvents', {
+                context: this,
+                asArray: true,
+                then: () => {
+                    console.log('this is after listen to:', this.state.displayEvents);
+                    this.filterEvents(this.filterType);
+                }
+            });
+        }
     }
 
     //manage events (general info)
     addNewEvent(event) {
-        console.log('add new event fired:', event);
         const events = {...this.state.events};
         const timestamp = Date.now();
         event.eventId = `evt${timestamp}`;
         events[`evt${timestamp}`] = event;
 
-        this.setState({ 
-            events: events 
-        }, () => {
-            console.log('add new event callback started FUCKFUCKFUCKFUCK');
-
-        });
-
-        console.log('this is after this.setState call');
+        base.push(`allEvents/evt${timestamp}`, {
+            data: event
+        }).then(() => {
+            this.setState( { events });
+        })
     }
 
     editEvent(id) {
@@ -88,17 +84,19 @@ export default class Root extends Component {
         let confirm = true;
         if(confirm) {
             const events = {...this.state.events};
-            events[id] = null;
-            this.setState({ events },
-                () => {
-                    console.log('delete event setstate callback');
+            console.log('deleting:', events[id]);
+            delete events[id];
+            base.remove(`allEvents/${id}`)
+                .then(() => {
+                    console.log('deleted event at:', id);
+                    this.setState({ events });
+                    console.log(this.state.events);
                 });
         }
     }
 
     // //manage event posts (to be passed to EventDetails component)
     addNewPost(post, eventId) {
-        console.log('add new post fired:', post, eventId);
         const events = {...this.state.events};
         const postId = `post${post.postedOn}`;
         const eventPosts = events[eventId]['posts'];
@@ -107,11 +105,7 @@ export default class Root extends Component {
            
         }
         events[eventId]['posts'][postId] = post;
-        this.setState({ 
-            events: events
-        }, () => {
-            console.log('added post', post, 'to event:', events[eventId]);
-        });
+        this.setState({ events });
     }
 
     editPost(eventId, postId) {
@@ -119,18 +113,16 @@ export default class Root extends Component {
     }
 
     deletePost(eventId, postId) {
-        console.log('del post:', eventId, postId);
         //this.showModal();
         let confirm = true; //window.confirm('Delete this post?');
-        if(confirm) {
-            console.log('performing delete');
+        // if(confirm) {
             const events = {...this.state.events};
             delete events[eventId]['posts'][postId];
-            console.log(events);
-            this.setState({ 
-                events: events 
+            base.remove(`allEvents/${eventId}/posts/${postId}`)
+                .then(() => {
+                this.setState({ events });
             });
-        }
+        //}
     }
 
     //modal methods
@@ -165,6 +157,10 @@ export default class Root extends Component {
                 session = true;
                 localStorage.setItem('loggedIn', 'true');
                 this.setState({ loggedIn: session });
+                this.ref = base.syncState(`allEvents`, {
+                    context: this,
+                    state: 'events'
+                });
             }
         });
     }
@@ -188,17 +184,15 @@ export default class Root extends Component {
         .filter(event => {
             if(type === 'current') {
                 return new Date(event.props.eventInfo.eventDate) >= Date.now();
-            } else {
+            } else if(type === 'past') {
                 return new Date(event.props.eventInfo.eventDate) < Date.now();
+            } else {
+                return event;
             }
         })
         .sort((e1, e2) => e1.props.eventInfo.eventDate < e2.props.eventInfo.eventDate ? 1 : -1);
         
-        this.setState({
-            displayEvents: e
-        }, () => {
-            console.log('filter events setstate callback', this.state);
-        });
+        this.setState({ displayEvents: e });
     }
 
     render() {        
@@ -222,6 +216,8 @@ export default class Root extends Component {
                                                 <div className="events-sidebar--topmenu">
                                                     <span onClick={() => this.filterEvents('current')}>Upcoming</span>  --  
                                                     <span onClick={() => this.filterEvents('past')}>Past</span>
+                                                      --  
+                                                    <span onClick={() => this.filterEvents('all')}>All</span>
                                                 </div>
                                                 <MenuItems title={this.filterType} events={this.state.displayEvents} />
                                                 <h3>Add New Event</h3>
@@ -251,8 +247,10 @@ export default class Root extends Component {
                                                 <div className="events-sidebar--topmenu">
                                                     <span onClick={() => this.filterEvents('current')}>Upcoming</span> -- 
                                                     <span onClick={() => this.filterEvents('past')}>Past</span>
+                                                      --  
+                                                    <span onClick={() => this.filterEvents('all')}>All</span>
                                                 </div>
-                                                <MenuItems title="test" events={this.state.displayEvents} />
+                                                <MenuItems title={this.filterType} events={this.state.displayEvents} />
                                                 <h3>Add New Event</h3>
                                                 <AddEventForm addNewEvent={this.addNewEvent} />
                                             </div>
