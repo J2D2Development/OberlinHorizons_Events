@@ -57,6 +57,16 @@ export default class Root extends Component {
                     this.filterEvents(this.filterType);
                 }
             });
+            
+            base.auth().onAuthStateChanged(function(user) {
+                console.log('auth state changed!');
+                if (user) {
+                    // User is signed in.
+                    console.log('got user info:', user.email);
+                } else {
+                    // No user is signed in.
+                }
+            });
         }
     }
 
@@ -115,14 +125,14 @@ export default class Root extends Component {
     deletePost(eventId, postId) {
         //this.showModal();
         let confirm = true; //window.confirm('Delete this post?');
-        // if(confirm) {
+        if(confirm) {
             const events = {...this.state.events};
             delete events[eventId]['posts'][postId];
             base.remove(`allEvents/${eventId}/posts/${postId}`)
                 .then(() => {
                 this.setState({ events });
             });
-        //}
+        }
     }
 
     //modal methods
@@ -160,6 +170,15 @@ export default class Root extends Component {
                 this.ref = base.syncState(`allEvents`, {
                     context: this,
                     state: 'events'
+                });
+
+                base.listenTo('allEvents', {
+                    context: this,
+                    asArray: true,
+                    then: () => {
+                        console.log('this is after listen to:', this.state.displayEvents);
+                        this.filterEvents(this.filterType);
+                    }
                 });
             }
         });

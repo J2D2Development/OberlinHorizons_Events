@@ -13,13 +13,20 @@ export default class Login extends Component {
     
     render() {
         return(
-            <div>
-                <h1>Login please</h1>
-                <form ref={input => this.loginForm = input} onSubmit={e => this.fireLogin(e)}>
-                    <input type="text" placeholder="Email" id="email" ref={input => this.username = input} />
-                    <input type="password" placeholder="Password" id="password" ref={input => this.password = input} />
-                    <input type="submit" value="Log In" />
-                </form>
+            <div className="login-form--wrapper">
+                <div className="login-form--inner">
+                    <h1>Login</h1>
+                    <p className="login-instructions">
+                        Access for authorized users only<br />
+                        Request access
+                    </p>
+                    <form className="login-form" ref={input => this.loginForm = input} onSubmit={e => this.fireLogin(e)}>
+                        
+                            <input type="text" placeholder="Email" id="email" autoFocus ref={input => this.username = input} />
+                            <input type="password" placeholder="Password" id="password" ref={input => this.password = input} />
+                        <input type="submit" value="Log In" />
+                    </form>
+                </div>
             </div>
         )
     }
