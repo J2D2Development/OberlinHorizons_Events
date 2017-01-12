@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../img/logoSm.png';
 
-export default class HomePlaceholder extends Component {
+export default class HomeView extends Component {
     constructor() {
         super();
         this.activeSlide = 0;

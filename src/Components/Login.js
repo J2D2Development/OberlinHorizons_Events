@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from '../img/logo.png';
 
 export default class Login extends Component {
     fireLogin(evt) {
@@ -15,16 +16,20 @@ export default class Login extends Component {
         return(
             <div className="login-form--wrapper">
                 <div className="login-form--inner">
-                    <h1>Login</h1>
-                    <p className="login-instructions">
-                        Access for authorized users only<br />
-                        Request access
-                    </p>
+                    <h1>
+                        <img src={logo} alt="Ob-logo" />
+                        <div>
+                            Oberlin Horizons
+                            <div className="subhead">Events</div>
+                        </div>
+                    </h1>
+                    
                     <form className="login-form" ref={input => this.loginForm = input} onSubmit={e => this.fireLogin(e)}>
-                        
                             <input type="text" placeholder="Email" id="email" autoFocus ref={input => this.username = input} />
                             <input type="password" placeholder="Password" id="password" ref={input => this.password = input} />
-                        <input type="submit" value="Log In" />
+                        <div className="login-bottom--wrapper">
+                            <button type="submit">Go <i className="fa fa-arrow-right" aria-hidden="true"></i></button>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const EventComponent = (props) => {
     return(
-        <Link className="link-nostyle" activeClassName="link-active" to={`/${props.pk}`}>
+        <Link className="link-nostyle link-marginbottom" activeClassName="link-active" to={`/events/${props.pk}`}>
             <div className="event-card">
                 <div className="event-card-title">{props.eventInfo.title}</div>
                 <div className="date">{moment(props.eventInfo.eventDate).format('MMMM Do YYYY')}</div>

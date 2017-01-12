@@ -24,10 +24,12 @@ export default class AddEventForm extends Component {
     render() {
         return(
             <div className="event-form-wrapper">
-                <form className="form-vertical" ref={input => this.eventForm = input} onSubmit={e => this.addEvent(e)}>
-                    <div className="date">
+                <h1>Add New Event</h1>
+                <form className="form-twocolumn" ref={input => this.eventForm = input} onSubmit={e => this.addEvent(e)}>
+                    <div className="datepicker">
+                        <h3>Select Date</h3>
                         <InfiniteCalendar
-                            width={200} height={300}
+                            width={300} height={250}
                             selectedDate={new Date()} 
                             onSelect={momentObj => {
                                 console.log(momentObj.format());
@@ -35,14 +37,19 @@ export default class AddEventForm extends Component {
                             }}
                         />
                     </div>
-                    <div className="event-card-title">
-                        <input className="title-input" ref={input => this.title = input} type="text" placeholder="Event Title" />
-                        <input className="title-input" ref={input => this.details = input} type="text" placeholder="Event Details" />
-                    </div>
-                    <div className="event-card-actions">
-                        <button className="new-event-submit" type="submit">
-                            <i className="fa fa-plus" aria-hidden="true"></i>
-                        </button>
+                    <div className="text-input--wrapper">
+                        <div className="event-card-title">
+                            <h3>Event Title</h3>
+                            <input className="title-input" ref={input => this.title = input} type="text" placeholder="Kickass Event Title" />
+
+                            <h3>Event Details</h3>
+                            <textarea className="title-input" ref={input => this.details = input} placeholder="Oberlin Horizons secret meeting details..."></textarea>
+                        </div>
+                        <div className="event-card-actions">
+                            <button className="new-event-submit" type="submit">
+                                <i className="fa fa-plus" aria-hidden="true"></i> Add Event
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

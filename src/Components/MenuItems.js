@@ -14,7 +14,6 @@ const MenuItems = (props) => {
     }
     return (
         <div>
-            <h3>{title} Events</h3>
             { props.events }
         </div>
     )

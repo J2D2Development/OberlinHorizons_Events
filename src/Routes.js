@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Match, Miss } from 'react-router';
+import { BrowserRouter, Match, Miss, Link } from 'react-router';
 import EventDetails from './Components/EventDetails';
 import NotFound from './Components/NotFound';
-import HomePlaceholder from './Components/HomePlaceholder';
+import HomeView from './Components/HomeView';
 
 import './App.css';
 import base from './base';
@@ -18,6 +18,7 @@ export default class Root extends Component {
     constructor() {
         super();
 
+        this.headerHeight = 0;
         this.filterType = 'current';
         this.addNewEvent = this.addNewEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
@@ -39,9 +40,16 @@ export default class Root extends Component {
     }
 
     componentWillMount() {
+        
     }
 
     componentDidMount() {
+        console.log('route component did mount');
+        const header = document.querySelector('#header');
+        if(header) {
+            this.headerHeight = header.clientHeight;
+        }
+
         if(this.state.loggedIn) {
             console.log('you are logged in!');
             this.ref = base.syncState(`allEvents`, {
@@ -172,6 +180,12 @@ export default class Root extends Component {
                     state: 'events'
                 });
 
+                const header = document.querySelector('#header');
+                if(header) {
+                    this.headerHeight = header.clientHeight;
+                    console.log('should now fix padding...', this.headerHeight);
+                }
+
                 base.listenTo('allEvents', {
                     context: this,
                     asArray: true,
@@ -231,26 +245,24 @@ export default class Root extends Component {
                                     <Header loggedIn={this.state.loggedIn} logout={this.logout} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
-                                            <div className="events-main--sidebar">
+                                            <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
                                                 <div className="events-sidebar--topmenu">
-                                                    <span onClick={() => this.filterEvents('current')}>Upcoming</span>  --  
-                                                    <span onClick={() => this.filterEvents('past')}>Past</span>
-                                                      --  
-                                                    <span onClick={() => this.filterEvents('all')}>All</span>
+                                                    <div className={this.filterType === 'current' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('current')}>Current</div>
+                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past')}>Past</div>
+                                                    <div className={this.filterType === 'all' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('all')}>All</div>
                                                 </div>
                                                 <MenuItems title={this.filterType} events={this.state.displayEvents} />
-                                                <h3>Add New Event</h3>
-                                                <AddEventForm addNewEvent={this.addNewEvent} />
+                                                <Link className="addnew-link" to={'/addnewevent'}>Add New Event</Link>
                                             </div>
-                                            <div className="events-main--full">
-                                                <HomePlaceholder />
+                                            <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
+                                                <HomeView />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             )} 
                         }/>
-                        <Match exactly pattern="/:eventId" render={(props) => {
+                        <Match exactly pattern="/events/:eventId" render={(props) => {
                             if(!this.state.loggedIn) { 
                                 return (
                                     <Login login={this.login} />
@@ -262,18 +274,16 @@ export default class Root extends Component {
                                     <Header loggedIn={this.state.loggedIn} logout={this.logout} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
-                                            <div className="events-main--sidebar">
+                                            <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
                                                 <div className="events-sidebar--topmenu">
-                                                    <span onClick={() => this.filterEvents('current')}>Upcoming</span> -- 
-                                                    <span onClick={() => this.filterEvents('past')}>Past</span>
-                                                      --  
-                                                    <span onClick={() => this.filterEvents('all')}>All</span>
+                                                    <div className={this.filterType === 'current' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('current')}>Current</div>
+                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past')}>Past</div>
+                                                    <div className={this.filterType === 'all' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('all')}>All</div>
                                                 </div>
                                                 <MenuItems title={this.filterType} events={this.state.displayEvents} />
-                                                <h3>Add New Event</h3>
-                                                <AddEventForm addNewEvent={this.addNewEvent} />
+                                                <Link className="addnew-link" to={'/addnewevent'}>Add New Event</Link>
                                             </div>
-                                            <div className="events-main--full">
+                                            <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
                                                 <EventDetails eventDetails={this.state.displayEvents.filter(e => {
                                                     return e.props.pk === props.params.eventId;
                                                 }).map(e => {
@@ -285,6 +295,36 @@ export default class Root extends Component {
                                 </div>
                             )}
                         }/>
+
+                        <Match exactly pattern="/addnewevent" render={(props) => {
+                            if(!this.state.loggedIn) { 
+                                return (
+                                    <Login login={this.login} />
+                                ) 
+                            }
+
+                            return (
+                                <div className="outer-wrapper">
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <div className="App">
+                                        <div className="events-main--wrapper">
+                                            <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
+                                                <div className="events-sidebar--topmenu">
+                                                    <div className={this.filterType === 'current' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('current')}>Current</div>
+                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past')}>Past</div>
+                                                    <div className={this.filterType === 'all' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('all')}>All</div>
+                                                </div>
+                                                <MenuItems title={this.filterType} events={this.state.displayEvents} />
+                                            </div>
+                                            <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
+                                                <AddEventForm addNewEvent={this.addNewEvent} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        }/>
+
                         <Miss component={NotFound} />
                     </div>
                 </BrowserRouter>
