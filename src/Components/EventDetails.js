@@ -6,7 +6,8 @@ import EventPost from './EventPost';
 import moment from 'moment';
 
 const EventDetails = (props) => {
-    let d, posts;
+    let d, posts, detailsAvailable = true;
+    console.log('in details:', props);
     if(props.eventDetails) {
         d = props.eventDetails;
         if(d.posts) {
@@ -20,6 +21,18 @@ const EventDetails = (props) => {
                 )
             });
         }
+    } else if(props && !props.eventDetails) {
+        console.log('props loaded, eventDetails undefined');
+        detailsAvailable = false;
+    }
+
+    if(!detailsAvailable) {
+        return(
+            <div className="home-wrapper no-event-selected">
+                <i className="fa fa-arrow-left no-event-arrow" aria-hidden="true"></i>
+                Please select an event
+            </div>
+        );
     }
 
     return(

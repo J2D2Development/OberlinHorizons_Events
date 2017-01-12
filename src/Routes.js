@@ -30,6 +30,7 @@ export default class Root extends Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.filterEvents = this.filterEvents.bind(this);
+        this.setHeader = this.setHeader.bind(this);
 
         this.state = {
             events: {},
@@ -39,16 +40,21 @@ export default class Root extends Component {
         };
     }
 
+    setHeader() {
+        const header = document.querySelector('#header');
+        if(header) {
+            this.headerHeight = header.clientHeight;
+            console.log('should now fix padding...', this.headerHeight);
+        }
+    }
+
     componentWillMount() {
         
     }
 
     componentDidMount() {
         console.log('route component did mount');
-        const header = document.querySelector('#header');
-        if(header) {
-            this.headerHeight = header.clientHeight;
-        }
+        this.setHeader();
 
         if(this.state.loggedIn) {
             console.log('you are logged in!');
@@ -180,11 +186,7 @@ export default class Root extends Component {
                     state: 'events'
                 });
 
-                const header = document.querySelector('#header');
-                if(header) {
-                    this.headerHeight = header.clientHeight;
-                    console.log('should now fix padding...', this.headerHeight);
-                }
+                this.setHeader();
 
                 base.listenTo('allEvents', {
                     context: this,
@@ -206,7 +208,8 @@ export default class Root extends Component {
         this.setState({ loggedIn: session });
     }
 
-    filterEvents(type) {
+    filterEvents(type, setInitial=false) {
+        console.log('inside filter, location is:', window.location);
         this.filterType = type;
         let e = Object.keys(this.state.events)
         .map(key => {
@@ -248,7 +251,7 @@ export default class Root extends Component {
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
                                                 <div className="events-sidebar--topmenu">
                                                     <div className={this.filterType === 'current' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('current')}>Current</div>
-                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past')}>Past</div>
+                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past', true)}>Past</div>
                                                     <div className={this.filterType === 'all' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('all')}>All</div>
                                                 </div>
                                                 <MenuItems title={this.filterType} events={this.state.displayEvents} />
