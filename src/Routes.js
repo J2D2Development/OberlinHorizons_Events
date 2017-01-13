@@ -6,6 +6,7 @@ import HomeView from './Components/HomeView';
 
 import './App.css';
 import base from './base';
+import moment from 'moment';
 
 import Login from './Components/Login';
 import MenuItems from './Components/MenuItems';
@@ -258,7 +259,19 @@ export default class Root extends Component {
                                                 <Link className="addnew-link" to={'/addnewevent'}>Add New Event</Link>
                                             </div>
                                             <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
-                                                <HomeView />
+                                                <HomeView events={Object.keys(this.state.events).map(event => {
+                                                    const convertEvent = this.state.events[event];
+                                                    const start = moment(convertEvent.eventDate);
+                                                    const end = start.clone().add(1, 'day'); 
+                                                    return {
+                                                        title: convertEvent.title,
+                                                        desc: convertEvent.details,
+                                                        eventId: convertEvent.eventId,
+                                                        start: start._d,
+                                                        end: end._d,
+                                                        allDay: true
+                                                    };
+                                                })} />
                                             </div>
                                         </div>
                                     </div>

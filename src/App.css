@@ -87,18 +87,18 @@ nav {
 .login-form--inner {
   width: 30%;
   min-width: 400px;
-  background-color: #0B486B;
+  background-color: rgba(255,255,255,0.4);
   color: #f5f5f5;
   border-radius: 5px;
+  padding-bottom: 12px;
 }
 .login-form--inner h1 {
   font-weight: 100;
   display: flex;
   align-items: center;
-  background-color: #fff;
   color: #0B486B;
   padding: 0;
-  margin: 0 0 16px 0;
+  margin: 0;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
 }
@@ -113,34 +113,31 @@ nav {
 .login-form {
   display: flex;
   flex-direction: column;
-  padding-top: 12px;
 }
 .login-form input[type=text], .login-form input[type=password] {
   border: 0;
   border-bottom: 1px solid #999;
   padding: 6px 12px 6px 12px;
   width: 90%;
-  margin: 4px auto 16px auto;
-  border: 2px solid transparent;
+  margin: 4px auto 8px auto;
+  border: 1px solid transparent;
   font-size: 1.25em;
   transition: border 0.3s ease;
 }
 .login-form input[type=text]:focus, .login-form input[type=password]:focus {
   outline: 0;
-  border: 2px solid #E8860C;
+  border: 1px solid #E8860C;
 }
 .login-bottom--wrapper {
   width: 100%;
-  background-color: #fff;
-  padding: 16px 0 16px 0;
   text-align: center;
-  margin-top: 16px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  margin-top: 4px;
 }
 .login-form button {
   border: 0;
-  background-color: rgba(11,72,107, 1.0);
+  background-color: rgba(11,72,107,1);
   color: #f5f5f5;
   padding: 6px 0 6px 0;
   font-size: 1.5em;
@@ -159,49 +156,46 @@ nav {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 24px;
   width: 100%;
   height: 100%;
   min-height: 100%;
 }
+.home-calendar {
+  width: 95%;
+  height: 450px;
+}
 .home-messages {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  width: 75%;
-  min-width: 300px;
-  height: 100%;
+  min-width: 400px;
+  min-height: 50px;
 }
 .home-messages div {
   position: absolute;
-  font-size: 3em;
-  text-align: center;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   color: #E8860C;
-  opacity: 0.5;
   background-color: #fff;
   width: 100%;
-  transition: transform 1s ease;
-}
-.home-wrapper img {
-  opacity: 0.3;
-  width: 50px;
-  height: auto;
-}
-.home-text {
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
-  font-size: 0.85em;
-  text-align: center;
-  color: #666;
+  height: 100%;
+  transition: transform 1s ease, opacity 0.5s ease;
 }
 .activeSlide {
-  transform: scale(1);
+  transform: translateY(0);
+  opacity: 1;
 }
 .hiddenSlide {
-  transform: scale(0);
+  transform: translateY(100%);
+  opacity: 0;
 }
 
 .events-main--wrapper {
@@ -217,7 +211,7 @@ nav {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 275px;
+  width: 250px;
   overflow-y: auto;
   background-color: rgba(0,0,0,0.1);
   border-right: 1px solid rgba(0,0,0,0.2);
@@ -241,7 +235,7 @@ nav {
   align-items: flex-start;
   justify-content: flex-start;
   padding: 16px 16px 0 16px;
-  padding-left: 295px;
+  padding-left: 270px;
   flex-grow: 2;
   height: 100%;
   min-height: 100%;
@@ -503,6 +497,10 @@ h3 {
 }
 .addnew-link {
   color: #f5f5f5;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 250px;
   display: block;
   text-decoration: none;
   background-color: #E8860C;
