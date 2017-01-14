@@ -28,7 +28,10 @@ export default class Login extends Component {
                             <input type="text" placeholder="Email" id="email" autoFocus ref={input => this.username = input} />
                             <input type="password" placeholder="Password" id="password" ref={input => this.password = input} />
                         <div className="login-bottom--wrapper">
-                            <button type="submit">Go <i className="fa fa-arrow-right" aria-hidden="true"></i></button>
+                            <button type="submit">
+                                Reach The Horizon!
+                                <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </form>
                 </div>

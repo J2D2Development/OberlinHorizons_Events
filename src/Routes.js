@@ -20,7 +20,7 @@ export default class Root extends Component {
         super();
 
         this.headerHeight = 0;
-        this.filterType = 'current';
+        this.filterType = 'all';
         this.addNewEvent = this.addNewEvent.bind(this);
         this.deleteEvent = this.deleteEvent.bind(this);
         this.editEvent = this.editEvent.bind(this);
@@ -259,19 +259,21 @@ export default class Root extends Component {
                                                 <Link className="addnew-link" to={'/addnewevent'}>Add New Event</Link>
                                             </div>
                                             <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
-                                                <HomeView events={Object.keys(this.state.events).map(event => {
-                                                    const convertEvent = this.state.events[event];
-                                                    const start = moment(convertEvent.eventDate);
-                                                    const end = start.clone().add(1, 'day'); 
-                                                    return {
-                                                        title: convertEvent.title,
-                                                        desc: convertEvent.details,
-                                                        eventId: convertEvent.eventId,
-                                                        start: start._d,
-                                                        end: end._d,
-                                                        allDay: true
-                                                    };
-                                                })} />
+                                                <HomeView 
+                                                    events={Object.keys(this.state.events).map(event => {
+                                                        const convertEvent = this.state.events[event];
+                                                        const start = moment(convertEvent.eventDate);
+                                                        const end = start.clone().add(1, 'day'); 
+                                                        return {
+                                                            title: convertEvent.title,
+                                                            desc: convertEvent.details,
+                                                            eventId: convertEvent.eventId,
+                                                            start: start._d,
+                                                            end: end._d,
+                                                            allDay: true
+                                                        };
+                                                    })} filterEvents={this.filterEvents}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -347,3 +349,10 @@ export default class Root extends Component {
         )
     }
 }
+
+// Root.propTypes = {
+
+// }
+// Root.contextTypes = {
+//     router: React.PropTypes.func.isRequired
+// };

@@ -5,25 +5,14 @@ import moment from 'moment';
 
 BigCalendar.momentLocalizer(moment);
 
-// const MyCalendar = props => (
-//   <div>
-    
-//   </div>
-// );
-
 export default class HomeView extends Component {
     constructor() {
         super();
         this.activeSlide = 0;
-        //this.myEvents = [];
     }
 
     componentDidMount() {
-        // console.log('home:', this.props);
-        // if(this.props && this.props.events.length > 0) {
-        //     this.myEvents = this.props.events;
-        //     console.log('events loaded:', this.myEvents);
-        // }
+        this.props.filterEvents('all');
         this.activeSlide = 0;
         const messages = document.querySelectorAll('.home-messages div');
         const totalSlides = messages.length;
@@ -62,6 +51,10 @@ export default class HomeView extends Component {
                         events={this.props.events}
                         startAccessor='start'
                         endAccessor='end'
+                        onSelectEvent={(evt) => {
+                            evt.start < new Date() ? this.props.filterEvents('past') : this.props.filterEvents('current');
+                            this.context.router.transitionTo(`events/${evt.eventId}`);
+                        }}
                     />
                 </div>
                 <div className="home-messages">
@@ -75,3 +68,7 @@ export default class HomeView extends Component {
         )
     }
 }
+
+HomeView.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};

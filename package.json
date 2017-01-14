@@ -6,13 +6,13 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
-    "re-base": "^2.5.1",
-    "react": "^15.4.1",
+    "re-base": "2.5.1",
+    "react": "15.4.1",
     "react-addons-css-transition-group": "15.3.2",
-    "react-addons-shallow-compare": "^15.4.2",
-    "react-big-calendar": "^0.12.1",
-    "react-dom": "^15.4.1",
-    "react-infinite-calendar": "^1.2.2",
+    "react-addons-shallow-compare": "15.4.2",
+    "react-big-calendar": "0.12.1",
+    "react-dom": "15.4.1",
+    "react-infinite-calendar": "1.2.2",
     "react-router": "4.0.0-alpha.4"
   },
   "scripts": {

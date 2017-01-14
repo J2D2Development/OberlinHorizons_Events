@@ -5,8 +5,11 @@
     -date/creator larger
 1.5) add large calendar to home route:
     http://intljusticemission.github.io/react-big-calendar/examples/index.html
-2) sign in/sign up form
-    -component for each, swap between on button click?  allow login with fb? set user level to 'user' as default (i can update later via firebase)
+    -working well for now, might update formatting soon.
+2) sign in form
+    -close: add hover animation to arrow (translateX) or on password field min length reached?
+2.5) sign up form
+    -set user level to 'user' as default (i can update later via firebase)
 3) link to firebase
     -map out schema first
         -main obj: events
@@ -21,5 +24,11 @@
 4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
 5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events
 7) login validation
-8) fix 'add new event' formatting (button, image upload, drag/drop?, details field- how?)
-    -better answer might be modal for add new (add new card is just large plus box- click it to open modal and add event)
+8) fix 'add new event' formatting
+    -datepicker too big vertically
+    -shrink header
+    -bigger 'details' field
+    -add 'default image' optional upload field
+    -'add users to this event' option?
+9) edit event functionality
+10) loading screen
