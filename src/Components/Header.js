@@ -7,7 +7,7 @@ const Header = (props) => {
         <nav id="header">
             <ul className="main-nav">
                 <li className="logo-center">
-                    <img src={logo} alt="Ob-logo" />
+                    <Link to={'/'}><img src={logo} alt="Ob-logo" /></Link>
                     Events
                 </li>
                 <ul className="main-nav">
@@ -18,7 +18,9 @@ const Header = (props) => {
                         </Link>
                     </li>
                     <li className="nav-button" style={{marginRight: 6+'px'}}>
-                        <i className="fa fa-user-o" aria-hidden="true" title="My Profile"></i>
+                        <Link to={'/profile'}>
+                            <i className="fa fa-user-o" aria-hidden="true" title="My Profile"></i>
+                        </Link>
                     </li>
                 </ul>
             </ul>

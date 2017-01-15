@@ -18,8 +18,17 @@ import Header from './Components/Header';
 
 const Notifyr = props => {
     return (
-        <div>
+        <div className={props.styleType}>
             {props.message}
+        </div>
+    )
+}
+
+const Profile = props => {
+    return (
+        <div>
+            <h1>Greetings,</h1>
+            {props.profile ? props.profile.email : ''}
         </div>
     )
 }
@@ -48,13 +57,14 @@ export default class Root extends Component {
             displayEvents: [],
             activeUsers: {},
             loggedIn: localStorage.getItem('loggedIn') || false,
+            isLoading: true,
             notifyr: []
         };
     }
 
-    showNotifyr(message) {
+    showNotifyr(message, styleType='notifyr-default') {
         const notifyr = [...this.state.notifyr];
-        notifyr.push({key: new Date().getMilliseconds(), message: message});
+        notifyr.push({key: new Date().getMilliseconds(), message, styleType});
         this.setState({ notifyr }, () => {
             setTimeout(() => {
                 const notifyr = [...this.state.notifyr];
@@ -72,10 +82,12 @@ export default class Root extends Component {
     }
 
     componentWillMount() {
-        
+        console.log('component will mount fired');
+        //start loader?
     }
 
     componentDidMount() {
+        console.log('comoponent did mount fired');
         this.setHeader();
 
         if(this.state.loggedIn) {
@@ -92,16 +104,17 @@ export default class Root extends Component {
                 }
             });
             
-            base.auth().onAuthStateChanged(function(user) {
-                console.log('auth state changed!');
-                if (user) {
-                    // User is signed in.
-                    console.log('got user info:', user.email);
-                } else {
-                    // No user is signed in.
-                }
-            });
+            // base.auth().onAuthStateChanged(function(user) {
+            //     console.log('auth state changed!');
+            //     if (user) {
+            //         // User is signed in.
+            //         console.log('got user info:', user.email);
+            //     } else {
+            //         // No user is signed in.
+            //     }
+            // });
         }
+        this.setState({ isLoading: false });
     }
 
     //manage events (general info)
@@ -115,6 +128,7 @@ export default class Root extends Component {
             data: event
         }).then(() => {
             this.setState( { events });
+            this.showNotifyr('New Event Added', 'notifyr-success');
         })
     }
 
@@ -165,6 +179,7 @@ export default class Root extends Component {
             base.remove(`allEvents/${eventId}/posts/${postId}`)
                 .then(() => {
                     this.setState({ events });
+                    this.showNotifyr('Post Deleted', 'notifyr-warning');
                 });
         }
     }
@@ -200,9 +215,10 @@ export default class Root extends Component {
             if(error) {
                 console.log('error:', error);
                 let message = loginErrors[error.code] ? loginErrors[error.code] : 'Invalid Login Attempt';
-                this.showNotifyr(message);
+                this.showNotifyr(message, 'notifyr-warning');
             } else {
                 console.log('sign in success response:', data);
+                const name = data.displayName ? data.displayName : data.email;
                 session = true;
                 localStorage.setItem('loggedIn', 'true');
                 this.setState({ loggedIn: session });
@@ -220,6 +236,7 @@ export default class Root extends Component {
                         this.filterEvents(this.filterType);
                     }
                 });
+                this.showNotifyr(`Welcome back, ${name}`, 'notifyr-success');
             }
         });
     }
@@ -233,7 +250,6 @@ export default class Root extends Component {
     }
 
     filterEvents(type, setInitial=false) {
-        console.log('inside filter, location is:', window.location);
         this.filterType = type;
         let e = Object.keys(this.state.events)
         .map(key => {
@@ -255,7 +271,11 @@ export default class Root extends Component {
         this.setState({ displayEvents: e });
     }
 
-    render() {        
+    render() {   
+        if(this.state.isLoading) {
+            return null;
+        }     
+
         return (
                 <BrowserRouter>
                     <div className="App">
@@ -312,7 +332,7 @@ export default class Root extends Component {
 
                             return (
                                 <div className="outer-wrapper">
-                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} profile={base.auth().currentUser} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
@@ -366,6 +386,36 @@ export default class Root extends Component {
                             )}
                         }/>
 
+                        <Match exactly pattern="/profile" render={(props) => {
+                            if(!this.state.loggedIn) { 
+                                return (
+                                    <Login login={this.login} />
+                                ) 
+                            }
+
+                            return (
+                                <div className="outer-wrapper">
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <div className="App">
+                                        <div className="events-main--wrapper">
+                                            <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
+                                                <div className="events-sidebar--topmenu">
+                                                    <div className={this.filterType === 'current' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('current')}>Current</div>
+                                                    <div className={this.filterType === 'past' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('past')}>Past</div>
+                                                    <div className={this.filterType === 'all' ? 'link-active link-nostyle' : 'link-nostyle'} onClick={() => this.filterEvents('all')}>All</div>
+                                                </div>
+                                                <MenuItems title={this.filterType} events={this.state.displayEvents} />
+                                            </div>
+                                            <div className="events-main--full" style={{paddingTop: this.headerHeight + 'px'}}>
+                                                <Profile profile={base.auth().currentUser} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }} 
+                        />
+
                         <Miss component={NotFound} />
 
                         <div className="notifyr-wrapper">
@@ -379,7 +429,7 @@ export default class Root extends Component {
                                 transitionLeaveTimeout={1500}>
                                 {
                                     this.state.notifyr
-                                    .map(notice => <Notifyr key={notice.key} message={notice.message} />)
+                                    .map(notice => <Notifyr key={notice.key} styleType={notice.styleType} message={notice.message} />)
                                 }
                             </ReactCSSTransitionGroup>
                         </div>

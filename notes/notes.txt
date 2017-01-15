@@ -32,3 +32,7 @@
     -'add users to this event' option?
 9) edit event functionality
 10) loading screen
+    -simple overlay for now, only on did mount hook.  Need to make function to call when hiding loader (or showing?).  set isLoading to true when getting data, isLoading to false when didmount or when data 'get' callback/.then completes.
+11) profiles
+    -route created, just need to include form for edtiing email, password, display name, picture
+        https://firebase.google.com/docs/auth/web/manage-users

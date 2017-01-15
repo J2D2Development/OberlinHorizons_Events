@@ -558,15 +558,29 @@ h3 {
 /*Notifyr*/
 .notifyr-wrapper {
   position: fixed;
-  bottom: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  width: 35%;
+  min-width: 200px;
+  z-index: 99;
 }
 .notifyr-wrapper div {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 6px;
-  background-color: #333;
   color: #fff;
-  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.notifyr-default {
+  background-color: #333;
+}
+.notifyr-success {
+  background-color: #0084FF;
+}
+.notifyr-warning {
+  background-color: #FF2619;
 }
