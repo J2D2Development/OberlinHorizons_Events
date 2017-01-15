@@ -15,6 +15,14 @@ import AddEventForm from './Components/AddEventForm';
 import Header from './Components/Header';
 //import ConfirmModal from './Components/ConfirmModal';
 
+const Notifyr = props => {
+    return (
+        <div>
+            {props.message}
+        </div>
+    )
+}
+
 export default class Root extends Component {
     constructor() {
         super();
@@ -32,20 +40,35 @@ export default class Root extends Component {
         this.logout = this.logout.bind(this);
         this.filterEvents = this.filterEvents.bind(this);
         this.setHeader = this.setHeader.bind(this);
+        this.showNotifyr = this.showNotifyr.bind(this);
 
         this.state = {
             events: {},
             displayEvents: [],
             activeUsers: {},
-            loggedIn: localStorage.getItem('loggedIn') || false
+            loggedIn: localStorage.getItem('loggedIn') || false,
+            notifyr: []
         };
+    }
+
+    showNotifyr(message) {
+        const notifyr = [...this.state.notifyr];
+        notifyr.push({key: new Date().getMilliseconds(), message: message});
+        this.setState({ notifyr }, () => {
+            console.log('show notifyr setstate callback');
+            setTimeout(() => {
+                console.log('now hide notifyr');
+                const notifyr = [...this.state.notifyr];
+                notifyr.shift();
+                this.setState({ notifyr });
+            }, 2000);
+        });
     }
 
     setHeader() {
         const header = document.querySelector('#header');
         if(header) {
             this.headerHeight = header.clientHeight;
-            console.log('should now fix padding...', this.headerHeight);
         }
     }
 
@@ -54,11 +77,9 @@ export default class Root extends Component {
     }
 
     componentDidMount() {
-        console.log('route component did mount');
         this.setHeader();
 
         if(this.state.loggedIn) {
-            console.log('you are logged in!');
             this.ref = base.syncState(`allEvents`, {
                 context: this,
                 state: 'events'
@@ -68,7 +89,6 @@ export default class Root extends Component {
                 context: this,
                 asArray: true,
                 then: () => {
-                    console.log('this is after listen to:', this.state.displayEvents);
                     this.filterEvents(this.filterType);
                 }
             });
@@ -145,8 +165,8 @@ export default class Root extends Component {
             delete events[eventId]['posts'][postId];
             base.remove(`allEvents/${eventId}/posts/${postId}`)
                 .then(() => {
-                this.setState({ events });
-            });
+                    this.setState({ events });
+                });
         }
     }
 
@@ -172,11 +192,16 @@ export default class Root extends Component {
     // }
 
     login(submitted) {
+        const loginErrors = {
+            'auth/invalid-email': 'Please enter a valid email address',
+            'auth/wrong-password': 'Incorrect password or user not found'
+        };
         let session = this.state.loggedIn;
         base.authWithPassword({email: submitted.username, password: submitted.password}, (error, data) => {
             if(error) {
                 console.log('error:', error);
-                console.log('submitted:', submitted.username, submitted.password);
+                let message = loginErrors[error.code] ? loginErrors[error.code] : 'Invalid Login Attempt';
+                this.showNotifyr(message);
             } else {
                 console.log('sign in success response:', data);
                 session = true;
@@ -193,7 +218,6 @@ export default class Root extends Component {
                     context: this,
                     asArray: true,
                     then: () => {
-                        console.log('this is after listen to:', this.state.displayEvents);
                         this.filterEvents(this.filterType);
                     }
                 });
@@ -344,6 +368,9 @@ export default class Root extends Component {
                         }/>
 
                         <Miss component={NotFound} />
+                        <div className="notifyr-wrapper">
+                            {this.state.notifyr.map(notice => <Notifyr key={notice.key} message={notice.message} />)}
+                        </div>
                     </div>
                 </BrowserRouter>
         )
