@@ -481,6 +481,20 @@ h3 {
   -webkit-transform: translateY(120%);
           transform: translateY(120%);
 }*/
+.Notifyr-enter {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.Notifyr-enter.Notifyr-enter-active {
+  opacity: 1;
+}
+.Notifyr-leave {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.Notifyr-leave.Notifyr-leave-active {
+  opacity: 0;
+}
 
 /*utility classes*/
 .top-right {
@@ -555,5 +569,4 @@ h3 {
   background-color: #333;
   color: #fff;
   margin-top: 6px;
-  transition: opacity 0.3s ease;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-//import { Link } from 'react-router';
 import AddPostForm from './AddPostForm';
 import EventPost from './EventPost';
 import moment from 'moment';

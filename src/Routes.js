@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { BrowserRouter, Match, Miss, Link } from 'react-router';
 import EventDetails from './Components/EventDetails';
 import NotFound from './Components/NotFound';
@@ -55,13 +56,11 @@ export default class Root extends Component {
         const notifyr = [...this.state.notifyr];
         notifyr.push({key: new Date().getMilliseconds(), message: message});
         this.setState({ notifyr }, () => {
-            console.log('show notifyr setstate callback');
             setTimeout(() => {
-                console.log('now hide notifyr');
                 const notifyr = [...this.state.notifyr];
                 notifyr.shift();
                 this.setState({ notifyr });
-            }, 2000);
+            }, 4000);
         });
     }
 
@@ -368,8 +367,21 @@ export default class Root extends Component {
                         }/>
 
                         <Miss component={NotFound} />
+
                         <div className="notifyr-wrapper">
-                            {this.state.notifyr.map(notice => <Notifyr key={notice.key} message={notice.message} />)}
+                            <ReactCSSTransitionGroup
+                                transitionAppear={true}
+                                transitionAppearTimeout={0}
+                                transitionName="Notifyr"
+                                transitionEnter={true}
+                                transitionEnterTimeout={1500}
+                                transitionLeave={true}
+                                transitionLeaveTimeout={1500}>
+                                {
+                                    this.state.notifyr
+                                    .map(notice => <Notifyr key={notice.key} message={notice.message} />)
+                                }
+                            </ReactCSSTransitionGroup>
                         </div>
                     </div>
                 </BrowserRouter>
