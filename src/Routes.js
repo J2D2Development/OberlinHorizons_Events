@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { BrowserRouter, Match, Miss, Link } from 'react-router';
+import { Router, BrowserRouter, Match, Miss, Link, Redirect } from 'react-router';
 import EventDetails from './Components/EventDetails';
 import NotFound from './Components/NotFound';
 import HomeView from './Components/HomeView';
@@ -34,6 +34,12 @@ const Profile = props => {
 }
 
 export default class Root extends Component {
+    static get contextTypes() {
+        return {
+            router: React.PropTypes.object.isRequired,
+        };
+    }
+
     constructor() {
         super();
 
@@ -78,18 +84,17 @@ export default class Root extends Component {
         const header = document.querySelector('#header');
         if(header) {
             this.headerHeight = header.clientHeight;
+            console.log('header height set:', this.headerHeight);
+            this.forceUpdate();
         }
     }
 
     componentWillMount() {
-        console.log('component will mount fired');
-        //start loader?
+        
     }
 
-    componentDidMount() {
-        console.log('comoponent did mount fired');
-        this.setHeader();
-
+    componentDidMount() {    
+        console.log('did mount');   
         if(this.state.loggedIn) {
             this.ref = base.syncState(`allEvents`, {
                 context: this,
@@ -101,6 +106,7 @@ export default class Root extends Component {
                 asArray: true,
                 then: () => {
                     this.filterEvents(this.filterType);
+                    this.setState({ isLoading: false });
                 }
             });
             
@@ -113,8 +119,9 @@ export default class Root extends Component {
             //         // No user is signed in.
             //     }
             // });
+        } else {
+            this.setState({ isLoading: false });
         }
-        this.setState({ isLoading: false });
     }
 
     //manage events (general info)
@@ -206,6 +213,9 @@ export default class Root extends Component {
     // }
 
     login(submitted) {
+        console.log('context:', this.context);
+        console.log('this:', this);
+        console.log('router:', Router);
         const loginErrors = {
             'auth/invalid-email': 'Please enter a valid email address',
             'auth/wrong-password': 'Incorrect password or user not found'
@@ -216,6 +226,7 @@ export default class Root extends Component {
                 console.log('error:', error);
                 let message = loginErrors[error.code] ? loginErrors[error.code] : 'Invalid Login Attempt';
                 this.showNotifyr(message, 'notifyr-warning');
+                return 'invalid';
             } else {
                 console.log('sign in success response:', data);
                 const name = data.displayName ? data.displayName : data.email;
@@ -227,7 +238,7 @@ export default class Root extends Component {
                     state: 'events'
                 });
 
-                this.setHeader();
+                //this.setHeader();
 
                 base.listenTo('allEvents', {
                     context: this,
@@ -237,6 +248,8 @@ export default class Root extends Component {
                     }
                 });
                 this.showNotifyr(`Welcome back, ${name}`, 'notifyr-success');
+                
+                //this.context.router.transitionTo('/');
             }
         });
     }
@@ -273,23 +286,39 @@ export default class Root extends Component {
 
     render() {   
         if(this.state.isLoading) {
-            return null;
-        }     
+            return(
+                <div>
+                    <h1>Loading...</h1>
+                    (almost there!)
+                </div>
+            )
+        }
 
         return (
                 <BrowserRouter>
-                    <div className="App">
+                    <div className="App">                       
+
+                        <Match exactly pattern="/login" render={(props) => {
+                            return (
+                                <Login login={this.login} />
+                            )
+                        }}/>
+
+                        {
+                            //check for login- if yes render header, if no, redirect to login screen
+                            this.state.loggedIn ? (
+                                <div>
+                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    <Redirect to="/" />
+                                </div>
+                            ) : (
+                                <Redirect to="/login"/>
+                            )
+                        }
                         
                         <Match exactly pattern="/" render={(props) => {
-                            if(!this.state.loggedIn) { 
-                                return (
-                                    <Login login={this.login} />
-                                ) 
-                            }
-
                             return (
                                 <div className="outer-wrapper">
-                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
@@ -324,15 +353,8 @@ export default class Root extends Component {
                             )} 
                         }/>
                         <Match exactly pattern="/events/:eventId" render={(props) => {
-                            if(!this.state.loggedIn) { 
-                                return (
-                                    <Login login={this.login} />
-                                ) 
-                            }
-
                             return (
                                 <div className="outer-wrapper">
-                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} profile={base.auth().currentUser} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
@@ -358,15 +380,8 @@ export default class Root extends Component {
                         }/>
 
                         <Match exactly pattern="/addnewevent" render={(props) => {
-                            if(!this.state.loggedIn) { 
-                                return (
-                                    <Login login={this.login} />
-                                ) 
-                            }
-
                             return (
                                 <div className="outer-wrapper">
-                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
@@ -387,15 +402,8 @@ export default class Root extends Component {
                         }/>
 
                         <Match exactly pattern="/profile" render={(props) => {
-                            if(!this.state.loggedIn) { 
-                                return (
-                                    <Login login={this.login} />
-                                ) 
-                            }
-
                             return (
                                 <div className="outer-wrapper">
-                                    <Header loggedIn={this.state.loggedIn} logout={this.logout} />
                                     <div className="App">
                                         <div className="events-main--wrapper">
                                             <div className="events-main--sidebar" style={{paddingTop: this.headerHeight * 1.5 + 'px'}}>
@@ -441,7 +449,6 @@ export default class Root extends Component {
 
 // Root.propTypes = {
 
-// }
 // Root.contextTypes = {
-//     router: React.PropTypes.func.isRequired
+//     router: React.PropTypes.object.isRequired
 // };

@@ -9,7 +9,12 @@ export default class Login extends Component {
             username: this.username.value,
             password: this.password.value
         }
-        this.props.login(info);
+        let result = this.props.login(info);
+        console.log('result is:', result);
+
+        if(result) {
+            console.log('failed login, reset forms:', this.loginForm);
+        }
     }
     
     render() {

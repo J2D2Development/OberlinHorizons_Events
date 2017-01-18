@@ -24,6 +24,7 @@
 4) using basic confirm modal for confirming delete- make custom modal and function return boolean to handle this.
 5) security: only user with root level can delete events, only user with admin level can add/edit events.  user with user level can view events
 7) login validation
+    -difficult getting fields to reset!
 8) fix 'add new event' formatting
     -datepicker too big vertically
     -shrink header
@@ -36,3 +37,5 @@
 11) profiles
     -route created, just need to include form for edtiing email, password, display name, picture
         https://firebase.google.com/docs/auth/web/manage-users
+12) on login, redirect to home working, but would be best if could get the original url and redirect to there.
+13) setHeader not working anymore (firing too early- before dom loads?)
