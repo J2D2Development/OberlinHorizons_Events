@@ -38,10 +38,12 @@ const EventDetails = (props) => {
         <div style={{minWidth: 100 + '%'}}>
             <div className="event-details--headline">
                 <div className="event-details--flex">
-                    <h1>{d && d.title}</h1>
+                    <div style={{width: 85 + '%', backgroundColor: '#ccc', marginTop: 30 + 'px', padding: 16 + 'px'}}>
+                        <h1>{d && d.title}</h1>
+                        <div style={{fontStyle: 'italic'}}>{d && moment(d.eventDate).format('MMMM Do YYYY')}</div>
+                    </div>
                     <div className="event-details--more">
-                        Date: {d && moment(d.eventDate).format('MMMM Do YYYY')}<br />
-                        Creator: ...<br />
+                        Created By: ...<br />
                         <div className="event-card-actions">
                             <i
                                 onClick={() => props.editEvent(d.eventId)}
@@ -54,7 +56,9 @@ const EventDetails = (props) => {
                         </div>
                     </div>
                 </div>
-                {d && d.details}
+                <div style={{marginLeft: 32 + 'px', width: 85 + '%'}}>
+                    {d && d.details}
+                </div>
             </div>
             <div className="event-details--body">
                 <div className="event-details--posts">
@@ -64,11 +68,10 @@ const EventDetails = (props) => {
                         transitionLeave={false}>
                         { posts }
                     </ReactCSSTransitionGroup>
-                    <AddPostForm addNewPost={props.addNewPost} eventId={d && d.eventId} />
                 </div>
-                <div>
-                    Active User Info
-                </div>
+            </div>
+            <div style={{position: 'fixed', bottom: 0, right: 0}}>
+                <AddPostForm addNewPost={props.addNewPost} eventId={d && d.eventId} />
             </div>
         </div>
     )

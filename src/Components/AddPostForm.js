@@ -18,7 +18,7 @@ export default class AddPostForm extends Component {
 
     render() {
         return(
-            <div className="event-details--post">
+            <div className="event-details--post" style={{marginBottom: 0, alignItems: 'center'}}>
                 <div className="post-wrapper">
                     <i className="fa fa-2x fa-user-o post-icon" aria-hidden="true"></i><br />
                     <span className="post-author">user</span>

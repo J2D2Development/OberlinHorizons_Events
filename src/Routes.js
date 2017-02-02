@@ -85,7 +85,7 @@ export default class Root extends Component {
         if(header) {
             this.headerHeight = header.clientHeight;
             console.log('header height set:', this.headerHeight);
-            this.forceUpdate();
+            //this.forceUpdate();
         }
     }
 
@@ -94,7 +94,9 @@ export default class Root extends Component {
     }
 
     componentDidMount() {    
-        console.log('did mount');   
+        console.log('did mount');
+        this.setHeader();
+
         if(this.state.loggedIn) {
             this.ref = base.syncState(`allEvents`, {
                 context: this,
@@ -223,7 +225,6 @@ export default class Root extends Component {
         let session = this.state.loggedIn;
         base.authWithPassword({email: submitted.username, password: submitted.password}, (error, data) => {
             if(error) {
-                console.log('error:', error);
                 let message = loginErrors[error.code] ? loginErrors[error.code] : 'Invalid Login Attempt';
                 this.showNotifyr(message, 'notifyr-warning');
                 return 'invalid';
@@ -309,6 +310,7 @@ export default class Root extends Component {
                             this.state.loggedIn ? (
                                 <div>
                                     <Header loggedIn={this.state.loggedIn} logout={this.logout} />
+                                    {this.setHeader()}
                                     <Redirect to="/" />
                                 </div>
                             ) : (

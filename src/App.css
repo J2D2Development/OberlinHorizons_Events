@@ -259,17 +259,19 @@ nav {
 /*event details view*/
 .event-details--headline {
   background-color: #fff;
-  margin-bottom: 16px;
-  font-size: 1.25em;
+  margin-bottom: 42px;
   min-width: 100%;
   padding: 0 3px 0 3px;
 }
 .event-details--headline h1 {
   font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 3px;
 }
 .event-details--flex {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 24px;
 }
 .event-details--more {
   align-self: center;
@@ -281,9 +283,7 @@ nav {
   justify-content: space-between;
 }
 .event-details--posts {
-  max-width: 75%;
-  min-width: 75%;
-  margin-right: 12px;
+  width: 450px;
 }
 .event-details--posts h2 {
   font-weight: normal;
@@ -292,10 +292,9 @@ nav {
 .event-details--post {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 6px;
-  margin-bottom: 16px;
-  box-shadow: 2px 2px 6px #333;
+  margin-bottom: 24px;
   min-width: 100%;
   background-color: #fff;
   
@@ -306,14 +305,13 @@ nav {
 .post-wrapper {
   margin-right: 6px;
   text-align: center;
-  border-right: 1px solid #333;
   padding: 3px 6px 3px 1px;
 }
 .post-icon {
-  margin: 6px auto 0 auto;
 }
 .post-author {
-  font-size: 0.65em;
+  font-size: 0.85em;
+  margin-bottom: 6px;
 }
 
 /*add new post form*/
@@ -455,13 +453,13 @@ h3 {
   -webkit-transition: transform 0.5s, opacity 1.0s;
   transition: transform 0.5s, opacity 1.0s;
   opacity: 0;
-  -webkit-transform: translateY(-120%);
-          transform: translateY(-120%);
+  -webkit-transform: translateX(120%);
+          transform: translateX(120%);
 }
 .post-enter.post-enter-active {
   opacity: 1;
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
 }
 /*.post-leave {
   -webkit-transition: all 0.5s;
